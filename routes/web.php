@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,4 +36,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+// added
+
+Route::get('/ietms', [ItemController::class, 'index'])->middleware(['auth', 'verified'])->name('items.index');
+Route::get('/items/create', [ItemController::class, 'create'])->middleware(['auth', 'verified'])->name('items.create');
+Route::post('/items/store',[ItemController::class, 'store'])->middleware(['auth', 'verified'])->name('items.store');
 require __DIR__.'/auth.php';
