@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,9 +15,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::orderBy('id', 'desc')
+        $items = Item::orderBy('created_at', 'desc')
                         ->paginate(2);
-        return Inertia::render('Items',['items' => $items]);
+
+       
+        return Inertia::render('Items',compact('items'));
     }
 
     /**
@@ -24,7 +27,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return Inertia::render('ItemCreate');
+        $groups= Group::pluck('name','id');
+        return Inertia::render('ItemCreate',compact('groups'));
     }
 
     /**
@@ -102,5 +106,14 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        // dd($request->search_data);
+        $items=Item::where('name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(2);
+
+        return Inertia::render('Items',['items' => $items]);
+        
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\GroupController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,7 +40,16 @@ Route::middleware('auth')->group(function () {
 
 // added
 
-Route::get('/ietms', [ItemController::class, 'index'])->middleware(['auth', 'verified'])->name('items.index');
+Route::get('/items', [ItemController::class, 'index'])->middleware(['auth', 'verified'])->name('items.index');
 Route::get('/items/create', [ItemController::class, 'create'])->middleware(['auth', 'verified'])->name('items.create');
 Route::post('/items/store',[ItemController::class, 'store'])->middleware(['auth', 'verified'])->name('items.store');
+
+Route::post('/items/search',[ItemController::class, 'search'])->middleware(['auth', 'verified'])->name('items.search');
+
+
+
+Route::get('/groups', [GroupController::class, 'index'])->middleware(['auth', 'verified'])->name('groups.index');
+Route::get('/groups/create', [GroupController::class, 'create'])->middleware(['auth', 'verified'])->name('groups.create');
+Route::post('/groups/store',[GroupController::class, 'store'])->middleware(['auth', 'verified'])->name('groups.store');
+
 require __DIR__.'/auth.php';
