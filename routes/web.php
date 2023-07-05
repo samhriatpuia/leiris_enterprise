@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Foundation\Application;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -51,5 +53,10 @@ Route::post('/items/search',[ItemController::class, 'search'])->middleware(['aut
 Route::get('/groups', [GroupController::class, 'index'])->middleware(['auth', 'verified'])->name('groups.index');
 Route::get('/groups/create', [GroupController::class, 'create'])->middleware(['auth', 'verified'])->name('groups.create');
 Route::post('/groups/store',[GroupController::class, 'store'])->middleware(['auth', 'verified'])->name('groups.store');
+
+
+Route::get('/customers',[CustomerController::class, 'index'])->middleware(['auth', 'verified'])->name('customers.index');
+Route::get('/customers/create',[CustomerController::class, 'create'])->middleware(['auth', 'verified'])->name('customers.create');
+Route::post('/customers/store',[CustomerController::class, 'store'])->middleware(['auth', 'verified'])->name('customers.store');
 
 require __DIR__.'/auth.php';

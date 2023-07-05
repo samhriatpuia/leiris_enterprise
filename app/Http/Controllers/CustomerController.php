@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+
+class CustomerController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $customers = Customer::orderBy('created_at', 'desc')
+                        ->paginate(10);
+        return Inertia::render('Customer/Index',compact('customers'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Customer/Create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'gst' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'bank_account' => 'required',
+            'bank_ifsc' => 'required',
+            'bank_name' => 'required',
+            'bank_branch' => 'required',
+
+        ]);
+        // dd($request->name);
+        Customer::create([
+            'name' => $request->name,
+            'gst' => $request->gst,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'bank_account' => $request->bank_account,
+            'bank_ifsc' => $request->bank_ifsc,
+            'bank_name' => $request->bank_name,
+            'bank_branch' => $request->bank_branch,
+        ]);
+        sleep(1);
+
+        return redirect()->route('customers.index')->with('message', 'Group Created Successfully');
+
+    
+
+   
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Customer $customer)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Customer $customer)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Customer $customer)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Customer $customer)
+    {
+        //
+    }
+}
