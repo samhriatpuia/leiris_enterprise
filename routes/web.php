@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\DetailController;
 use Illuminate\Foundation\Application;
 
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::post('/sales/store',[SaleController::class, 'store'])->name('sales.store');
+    Route::post('/sales/search',[SaleController::class, 'search'])->name('sales.search');
+    Route::get('sales/invoice/index/{id}',[SaleController::class, 'invoiceIndex'])->name('sales.invoice.index');
+    Route::post('sales/invoice/store',[SaleController::class, 'invoiceStore'])->name('sales.invoice.store');
+
+    Route::get('/details', [DetailController::class, 'index'])->name('details.index');
+    Route::get('/details/create', [DetailController::class, 'create'])->name('details.create');
+    Route::post('/details/store',[DetailController::class, 'store'])->name('details.store');
+
 });
 
 

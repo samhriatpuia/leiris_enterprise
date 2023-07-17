@@ -20,4 +20,10 @@ class Customer extends Model
         'bank_branch',
         
     ];
+
+
+    // public function sales()
+    // {
+    //     return $this->hasMany(Sale::class);
+    // }
 }
