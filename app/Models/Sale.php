@@ -18,6 +18,7 @@ class Sale extends Model
         'discount',
         'scheme',
         'sub_total',
+        'grand_total',
         
     ];
 

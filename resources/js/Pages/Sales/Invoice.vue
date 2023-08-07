@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 import { useForm } from "@inertiajs/vue3";
-
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     
@@ -72,6 +72,18 @@ const submit = () => {
                             </div>
                         </div>
 
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-8">
+                            <div>
+                                <b>Logistic Charge:</b> {{ sale.logistic_charge }}
+                            </div>
+                            <div>
+                                <b>Handling Charge</b> {{ sale.handling_charge }}
+                            </div>
+                            <div>
+                                <b>Discount</b> {{ sale.discount }}
+                            </div>
+                        </div>
+
                        
                         <div class="mb-4">
                             <form @submit.prevent="submit" class="border border-gray-200 rounded-lg px-7">
@@ -82,7 +94,6 @@ const submit = () => {
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
-                                    
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <select id="particulars" v-model="form.particulars" name="particulars" for='particulars' class="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
@@ -99,14 +110,14 @@ const submit = () => {
                                     </div>
                                     
                                 </div>
-
-                                
-
-                                
-
+                            
                                 <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">save</button>
                             </form>
                         </div>
+
+                        
+                        
+
 
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -166,7 +177,8 @@ const submit = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="float-right" style="margin-right:315px">Sub-Total: {{ sale.sub_total }}</div>
+                                <div class="float-right" style="margin-right:315px">Sub-Total: {{ sale.sub_total }}</div> <br>
+                                <div class="float-right" style="margin-right:315px">Grand-Total: {{ sale.grand_total }}</div>
                                 <div class="m-2 p-2">
                                   
                                     <div class="flex">
@@ -180,6 +192,18 @@ const submit = () => {
                                         </template>
                                     </div>
                                     
+                                </div>
+
+
+                                <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
+                                    <div>
+                                        <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Settlement Details</Link>
+                                    </div>
+
+                                    <div>
+                                        <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Generate Cash memo</Link>
+                                    </div>
+
                                 </div>
                             </div>
                     </div>

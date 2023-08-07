@@ -141,8 +141,12 @@ class SaleController extends Controller
             $sale->sub_total=$sale->sub_total+$detail->amount;
         }
 
-        $sale->save();
+        
+
+        $sale->grand_total=$sale->sub_total+$sale->logistic_charge+$sale->handling_charge-$sale->discount;
        
+        $sale->save();
+
         // dd($sale->sub_total);
         $customer=Customer::where('id',$sale->customer_id)->first();
         $details=Detail::where('sales_id',$sale->id)->paginate(10);

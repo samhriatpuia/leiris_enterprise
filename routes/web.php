@@ -6,6 +6,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\SettlementController;
 use Illuminate\Foundation\Application;
 
 use Illuminate\Support\Facades\Route;
@@ -51,26 +52,31 @@ Route::middleware('auth')->group(function () {
     Route::get('/details/create', [DetailController::class, 'create'])->name('details.create');
     Route::post('/details/store',[DetailController::class, 'store'])->name('details.store');
 
+    // added
+
+    Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+    Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+    Route::post('/items/store',[ItemController::class, 'store'])->name('items.store');
+
+    Route::post('/items/search',[ItemController::class, 'search'])->name('items.search');
+
+
+
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::post('/groups/store',[GroupController::class, 'store'])->name('groups.store');
+
+
+    Route::get('/customers',[CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/create',[CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/customers/store',[CustomerController::class, 'store'])->name('customers.store');
+
+    Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
+    Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');
+
 });
 
 
-// added
 
-Route::get('/items', [ItemController::class, 'index'])->middleware(['auth', 'verified'])->name('items.index');
-Route::get('/items/create', [ItemController::class, 'create'])->middleware(['auth', 'verified'])->name('items.create');
-Route::post('/items/store',[ItemController::class, 'store'])->middleware(['auth', 'verified'])->name('items.store');
-
-Route::post('/items/search',[ItemController::class, 'search'])->middleware(['auth', 'verified'])->name('items.search');
-
-
-
-Route::get('/groups', [GroupController::class, 'index'])->middleware(['auth', 'verified'])->name('groups.index');
-Route::get('/groups/create', [GroupController::class, 'create'])->middleware(['auth', 'verified'])->name('groups.create');
-Route::post('/groups/store',[GroupController::class, 'store'])->middleware(['auth', 'verified'])->name('groups.store');
-
-
-Route::get('/customers',[CustomerController::class, 'index'])->middleware(['auth', 'verified'])->name('customers.index');
-Route::get('/customers/create',[CustomerController::class, 'create'])->middleware(['auth', 'verified'])->name('customers.create');
-Route::post('/customers/store',[CustomerController::class, 'store'])->middleware(['auth', 'verified'])->name('customers.store');
 
 require __DIR__.'/auth.php';

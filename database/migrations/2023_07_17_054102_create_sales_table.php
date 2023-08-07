@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('discount')->nullable();
             $table->string('scheme')->nullable();
             $table->bigInteger('sub_total')->nullable();
-
+            $table->bigInteger('grand_total')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->timestamps();
 

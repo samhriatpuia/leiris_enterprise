@@ -78,7 +78,7 @@ const submit = () => {
                                 </div>
 
                                 
-                                <!-- <div class="py-4">Bank Details</div> -->
+                               
                                 
 
                                 <div class="grid md:grid-cols-2 md:gap-6">
