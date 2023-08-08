@@ -91,8 +91,8 @@ defineProps({
 
 
                                             <td class="px-6 py-4">
-                                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
-                                                <Link :href="route('sales.invoice.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Invoice</Link>
+                                                <Link :href="route('sales.invoice.edit',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</Link>
+                                                <Link :href="route('sales.invoice.index',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline">Invoice</Link>
                                             </td>
                                         </tr>
                                     </tbody>

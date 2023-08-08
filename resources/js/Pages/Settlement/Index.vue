@@ -31,6 +31,12 @@ const submit = () => {
     form.reset()
 };
 
+function destroy(id) {
+    if (confirm("Are you sure you want to Delete")) {
+        form.delete(route('settlements.destroy', id));
+    }
+}
+
 </script>
 
 <template>
@@ -63,7 +69,7 @@ const submit = () => {
                                                     </th>
 
                                                     <th scope="col" class="px-6 py-3">
-                                                        Bank Details
+                                                        Grand Total
                                                     </th>
 
                                                     
@@ -98,8 +104,8 @@ const submit = () => {
                                                     </td>
 
                                                     <td class="px-6 py-4">
-                                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a>
-                                                        <Link :href="route('sales.invoice.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Invoice</Link>
+                                                        <button @click="destroy(settlement.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
+                                                        <!-- <Link :href="route('sales.invoice.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Invoice</Link> -->
                                                     </td>
                                                 </tr>
                                             </tbody>

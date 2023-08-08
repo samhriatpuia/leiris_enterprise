@@ -76,17 +76,19 @@ class SaleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Customer $customer)
+    public function edit($id)
     {
-        //
+        $sale=Sale::findOrFail($id);
+        $customers=Customer::pluck('name','id');
+        return Inertia::render('Sales/Edit',compact('sale','customers'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request)
     {
-        //
+        dd("HI");
     }
 
     /**

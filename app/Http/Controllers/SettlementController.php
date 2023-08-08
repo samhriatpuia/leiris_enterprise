@@ -98,8 +98,14 @@ class SettlementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Settlement $settlement)
+    public function destroy($id)
     {
-        //
+        // dd("here");
+        $settlement=Settlement::findOrFail($id);
+
+        $sale=Sale::findOrFail($settlement->sales_id);
+        $settlement->delete();
+
+        return redirect()->route('settlements.index',$sale->id);
     }
 }

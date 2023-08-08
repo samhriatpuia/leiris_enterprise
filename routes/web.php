@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/sales/search',[SaleController::class, 'search'])->name('sales.search');
     Route::get('sales/invoice/index/{id}',[SaleController::class, 'invoiceIndex'])->name('sales.invoice.index');
     Route::post('sales/invoice/store',[SaleController::class, 'invoiceStore'])->name('sales.invoice.store');
+    Route::get('sales/invoice/edit/{id}',[SaleController::class, 'edit'])->name('sales.invoice.edit');
+    Route::put('/sales/update', [SaleController::class, 'update'])->name('sales.update');
+
 
     Route::get('/details', [DetailController::class, 'index'])->name('details.index');
     Route::get('/details/create', [DetailController::class, 'create'])->name('details.create');
@@ -73,6 +76,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
     Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');
+    Route::delete('/settlements/delete/{id}',[SettlementController::class,'destroy'])->name('settlements.destroy');
 
 });
 
