@@ -75,9 +75,11 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Customer $customer)
+    public function edit($id)
     {
-        //
+        $customer=Customer::findOrFail($id);
+        // dd($customer);
+        return Inertia::render('Customer/Edit',compact('customer'));
     }
 
     /**
@@ -85,14 +87,56 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        // dd("HI");
+        $customer=Customer::findOrFail($request->id);
+        $request->validate([
+            'name' => 'required',
+            'gst' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'bank_account' => 'required',
+            'bank_ifsc' => 'required',
+            'bank_name' => 'required',
+            'bank_branch' => 'required',
+
+        ]);
+
+       
+        $customer->name = $request->name;
+        $customer->gst = $request->gst;
+        $customer->address = $request->address;
+        $customer->phone = $request->phone;
+        $customer->bank_account = $request->bank_account;
+        $customer->bank_ifsc = $request->bank_ifsc;
+        $customer->bank_name = $request->bank_name;
+        $customer->bank_branch = $request->bank_branch;
+       
+        $customer->save();
+        
+
+        return redirect()->route('customers.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy($id)
     {
-        //
+        $customer=Customer::findOrFail($id);
+
+        $customer->delete();
+
+        return redirect()->route('customers.index');
+    }
+    
+
+
+    public function search(Request $request)
+    {
+        // dd($request->search_data);
+        $customers=Customer::where('name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
+
+        return Inertia::render('Customer/Index',compact('customers'));
+        
     }
 }

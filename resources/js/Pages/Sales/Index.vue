@@ -8,11 +8,18 @@ import { useForm } from "@inertiajs/vue3";
 defineProps({
     sales: Object,
 });
+const form = useForm({
+    search_data: '',
+});
 
+
+const submit = () => {
+    form.post(route("sales.search"));
+};
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Sales" />
 
     <AuthenticatedLayout>
         <div class="py-12">
@@ -22,7 +29,10 @@ defineProps({
                         <div>
                             <div class="flow-root ">
                                 <p class="float-left text-blue-600">
-                                    <b>Customer List</b>
+                                    <b>Sales List</b> <br> <br>
+                                    <Link href="/sales/create" method="get" as="button" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                        Create New Sales/Invoice
+                                    </Link>
                                 </p>
                         
                                 <p class="float-right text-green-800">
@@ -33,9 +43,17 @@ defineProps({
                                                 
                                                 </div>
                                                 <div>
-                                                    <Link href="/sales/create" method="get" as="button" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                                        Create New Sales/Invoice
-                                                    </Link>
+                                                    <form @submit.prevent="submit" style="padding-top: 50px;">
+                                                    <!-- GRID search -->
+                                                        <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                                                            <div>
+                                                                <input type="text" id="search_data" v-model="form.search_data" name="search_data" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search customer name" required>
+                                                            </div>
+                                                            <div>
+                                                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>  
                                                 </div>
                                         </div>
                                      
@@ -73,7 +91,8 @@ defineProps({
                                     <tbody>
                                         <tr v-for="sale in sales.data" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Name: {{ sale.invoice_number }}
+                                                Customer Name: {{ sale.customer_name }} <br>
+                                                Invoice: {{ sale.invoice_number }}
                                                 <br><small>Date: {{ sale.date }}</small>
                                                 
                                                 

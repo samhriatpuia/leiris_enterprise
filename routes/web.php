@@ -23,14 +23,19 @@ use Inertia\Inertia;
 |
 */
 
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Auth/Login');
 });
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -62,17 +67,27 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/store',[ItemController::class, 'store'])->name('items.store');
 
     Route::post('/items/search',[ItemController::class, 'search'])->name('items.search');
-
-
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
+    Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
+    Route::put('/items/update', [ItemController::class, 'update'])->name('items.update');
 
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::post('/groups/store',[GroupController::class, 'store'])->name('groups.store');
+    Route::post('/groups/search',[GroupController::class, 'search'])->name('groups.search');
+    Route::delete('/groups/delete/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
+    Route::get('/groups/edit/{id}', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::put('/groups/update', [GroupController::class, 'update'])->name('groups.update');
 
-
+    
     Route::get('/customers',[CustomerController::class, 'index'])->name('customers.index');
     Route::get('/customers/create',[CustomerController::class, 'create'])->name('customers.create');
     Route::post('/customers/store',[CustomerController::class, 'store'])->name('customers.store');
+    Route::post('/customers/search',[CustomerController::class, 'search'])->name('customers.search');
+    Route::delete('/customers/delete/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::get('/customers/edit/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/customers/update', [CustomerController::class, 'update'])->name('customers.update');
+
 
     Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
     Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');

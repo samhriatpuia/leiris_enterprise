@@ -18,6 +18,13 @@ const form = useForm({
 const submit = () => {
     form.post(route("items.search"));
 };
+
+
+function destroy(id) {
+    if (confirm("Are you sure you want to Delete")) {
+        form.delete(route('items.destroy', id));
+    }
+}
 </script>
 
 <template>
@@ -111,7 +118,14 @@ const submit = () => {
 
 
                                             <td class="px-6 py-4">
-                                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                <div class="grid grid-cols-2 md:grid-cols-2 gap-2">
+                                                    <div>
+                                                         <Link :href="route('items.edit',item.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" >Edit</Link>
+                                                    </div>
+                                                    <div>
+                                                        <button @click="destroy(item.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>

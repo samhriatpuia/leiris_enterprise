@@ -20,6 +20,16 @@ class SaleController extends Controller
         return Inertia::render('Sales/Index',compact('sales'));
     }
 
+
+    public function search(Request $request)
+    {
+        // dd($request->search_data);
+        $sales=Sale::where('customer_name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
+
+        return Inertia::render('Sales/Index',compact('sales'));
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -47,6 +57,7 @@ class SaleController extends Controller
 
         ]);
         // dd($request->name);
+        $customer=Customer::findOrFail($request->customer_id);
         Sale::create([
             'customer_id' => $request->customer_id,
             'date' => $request->date,
@@ -55,8 +66,11 @@ class SaleController extends Controller
             'handling_charge' => $request->handling_charge,
             'discount' => $request->discount,
             'scheme' => $request->scheme,
+
+            'customer_name' => $customer->name,
             // 'bank_branch' => $request->bank_branch,
         ]);
+        
 
         return redirect()->route('sales.index')->with('message', 'Sales Created Successfully');
 
@@ -88,7 +102,34 @@ class SaleController extends Controller
      */
     public function update(Request $request)
     {
-        dd("HI");
+        $sale=Sale::findOrFail($request->id);
+        $request->validate([
+            'customer_id' => 'required',
+            'date' => 'required',
+            'invoice_number' => 'required',
+            'logistic_charge' => 'required',
+            'handling_charge' => 'required',
+            'discount' => 'required',
+            'scheme' => 'required',
+            // 'sub_total' => 'required',
+
+        ]);
+        $customer=Customer::findOrFail($request->customer_id);
+
+        $sale->customer_id = $request->customer_id;
+        $sale->date = $request->date;
+        $sale->invoice_number = $request->invoice_number;
+        $sale->logistic_charge = $request->logistic_charge;
+        $sale->handling_charge = $request->handling_charge;
+        $sale->discount = $request->discount;
+        $sale->scheme = $request->scheme;
+
+        $sale->customer_name = $customer->name;
+       
+        $sale->save();
+        
+
+        return redirect()->route('sales.index');
     }
 
     /**

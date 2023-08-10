@@ -7,40 +7,41 @@ import { useForm } from "@inertiajs/vue3";
 
 
 const props = defineProps({
-    items: {
+    item: {
         type: Object,
         default: () => ({}),
     },
-    groups: {
-        groups: Object,
+    groups:{
+        type: Object,
     },
-    errors: {
+     errors: {
         Object
     },
 });
 
-
 const form = useForm({
-    title: '',
-    name: '',
-    group: '',
-    gst: '',
-    HSN: '',
-    stock_opening : '',
-    purchase_price : '',
-    selling_price : '',
-    batch_no: '',
-    manufacture_date: '',
-    expiry_date: '',
-    units_main: '',
-    units_secondary: '',
-    units_relation: '',
-
+    id: props.item.id,
+    title: props.item.title,
+    name: props.item.name,
+    group: props.item.group,
+    gst: props.item.gst,
+    HSN: props.item.HSN,
+    
+    stock_opening: props.item.stock_opening,
+    purchase_price: props.item.purchase_price,
+    selling_price:props.item.selling_price,
+    batch_no:props.item.batch_no,
+    manufacture_date:props.item.manufacture_date,
+    expiry_date:props.item.expiry_date,
+    units_main:props.item.units_main,
+    units_secondary:props.item.units_secondary,
+    units_relation:props.item.units_relation,
 });
 
 const submit = () => {
-    form.post(route("items.store"));
+    form.put(route("items.update",props.item.id));
 };
+
 </script>
 
 <template>
@@ -159,7 +160,6 @@ const submit = () => {
                                         <label for="units_relation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Relation</label>
                                     </div>
                                 </div>
-
 
 
 

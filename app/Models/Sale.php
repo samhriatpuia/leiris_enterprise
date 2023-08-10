@@ -19,7 +19,7 @@ class Sale extends Model
         'scheme',
         'sub_total',
         'grand_total',
-        
+        'customer_name',
     ];
 
 

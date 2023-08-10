@@ -60,9 +60,12 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit($id)
     {
-        //
+        $group=Group::findOrFail($id);
+
+
+        return Inertia::render('Group/Edit',compact('group'));
     }
 
     /**
@@ -70,14 +73,42 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+        $group=Group::findOrFail($request->id);
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+        ]);
+
+       
+        $group->name = $request->name;
+        $group->type = $request->type;
+        
+       
+        $group->save();
+        
+
+        return redirect()->route('groups.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy($id)
     {
-        //
+        $group=Group::findOrFail($id);
+
+        $group->delete();
+
+        return redirect()->route('groups.index')->with('message', 'Expense Updated Successfully');
+    }
+
+
+    public function search(Request $request)
+    {
+        // dd($request->search_data);
+        $groups=Group::where('name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
+
+        return Inertia::render('Group/Index',compact('groups'));
+        
     }
 }
