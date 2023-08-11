@@ -196,4 +196,129 @@ class SaleController extends Controller
         $items=Item::pluck('name','id');
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
     }
+
+
+    public function invoice_generate($id)
+    {
+        
+        $sale=Sale::findOrFail($id);
+        $details=detail::where('sales_id',$sale->id)->get();
+        // $dept=Department::where('id',$deposit->department_id)->first();
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        $invoice_number= htmlspecialchars($sale->invoice_number);
+        $date=htmlspecialchars($sale->date);
+        $address=htmlspecialchars($sale->address);
+        $contact=htmlspecialchars($sale->_no);
+        $section = $phpWord->addSection();
+        $phpWord->setDefaultFontSize(13);
+        $customer=htmlspecialchars($sale->customer);
+        $payment=htmlspecialchars($sale->payment_mode);
+        $total=htmlspecialchars($sale->total);
+        // Create a new section
+
+
+        // Add the heading
+        
+        $text1 = 'CCR Enterprise';
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
+        $section->addText($text1, null, array('alignment' => $alignment));
+        
+        // Add text to the section with centered alignment
+        $text2 = 'GST No.: AXPPL5682';
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
+        $section->addText($text2, null, array('alignment' => $alignment));
+
+
+        // Add empty paragraph for spacing
+        $section->addTextBreak(2); // Add 2 line breaks for more spacing
+
+        // Add invoice details
+        $section->addText('Invoice Number: ' . $invoice_no);
+        $section->addText('Date: ' . $date);
+        $section->addText('Customer: ' . $customer);
+        $section->addText('Address: ' . $address);
+        $section->addText('Payment: ' . $payment);
+
+        
+
+        $section->addTextBreak(2);
+// Create a table for the sales list
+        $table = $section->addTable();
+        $table->addRow();
+        $table->addCell(2000)->addText('Particular');
+        $table->addCell(1000)->addText('Quantity');
+        $table->addCell(1000)->addText('Rate');
+        $table->addCell(1000)->addText('Discount');
+        $table->addCell(1000)->addText('Amount');
+
+        // Set border style for each cell in the table
+        
+
+        // Populate the table with sales data
+        foreach ($details as $detail) {
+            $table->addRow();
+            $table->addCell(2000)->addText($detail->particulars);
+            $table->addCell(1000)->addText($detail->quantity);
+            $table->addCell(2000)->addText($detail->rate);
+            $table->addCell(2000)->addText($detail->discount.'%');
+            $table->addCell(2000)->addText($detail->amount);
+        }
+
+        
+
+        // Calculate and display subtotal, taxes, and total
+        // $subtotal = array_sum(array_column($salesList, 3));
+        // $taxes = $subtotal * 0.1; // Assuming 10% tax rate
+        // $total = $subtotal + $taxes;
+
+        // $table->addRow();
+        // $table->addCell(3000)->addText('');
+        // $table->addCell(2000)->addText('');
+        // $table->addCell(2000)->addText('Subtotal:');
+        // $table->addCell(2000)->addText('$' . $subtotal);
+
+        // $table->addRow();
+        // $table->addCell(3000)->addText('');
+        // $table->addCell(2000)->addText('');
+        // $table->addCell(2000)->addText('Taxes:');
+        // $table->addCell(2000)->addText('$' . $taxes);
+
+        
+        // $table->addRow();
+        // $table->addCell(3000)->addText('');
+        // $table->addCell(3000)->addText('');
+        // $table->addCell(2000)->addText('');
+        // $table->addCell(2000)->addText('Total:');
+        // $table->addCell(2000)->addText('$' . $total);
+
+        $section->addTextBreak(2); // Add 2 line breaks for more spacing
+       
+        $text3 = 'TOTAL:  '.$total;
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
+        $section->addText($text3, null, array('alignment' => $alignment));
+
+        // Set border style for each cell in the table
+        foreach ($table->getRows() as $row) {
+            foreach ($row->getCells() as $cell) {
+                $cellStyle = $cell->getStyle();
+                $cellStyle->setBorderTopSize(1);
+                $cellStyle->setBorderTopColor('000000');
+                $cellStyle->setBorderBottomSize(1);
+                $cellStyle->setBorderBottomColor('000000');
+            }
+        }
+       
+        // $section->addText($description);
+
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        try {
+            $objWriter->save(storage_path($date.'.doc'));
+        } catch (Exception $e) {
+        }
+
+
+        return response()->download(storage_path($date.'.doc'))->deleteFileAfterSend(true);
+    }
 }

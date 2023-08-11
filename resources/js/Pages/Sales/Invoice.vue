@@ -201,7 +201,9 @@ const submit = () => {
                                     </div>
 
                                     <div>
-                                        <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Generate Cash memo</Link>
+                                        <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >
+                                            <div><u>Download Invoice</u></div>
+                                        </a>
                                     </div>
 
                                 </div>
