@@ -91,7 +91,7 @@ function destroy(id) {
                         </div>
 
                        
-                        <div class="mb-4">
+                        <!-- <div class="mb-4">
                             <form @submit.prevent="submit" class="border border-gray-200 rounded-lg px-7">
                                 <div class="mt-5">
                                     <div class="">
@@ -126,7 +126,7 @@ function destroy(id) {
                             
                                 <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">save</button>
                             </form>
-                        </div>
+                        </div> -->
 
                         
                         
@@ -160,9 +160,9 @@ function destroy(id) {
                                                 Amount
                                             </th>
                                             
-                                            <th scope="col" class="px-6 py-3">
+                                            <!-- <th scope="col" class="px-6 py-3">
                                                 Action
-                                            </th>
+                                            </th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -191,11 +191,11 @@ function destroy(id) {
                                             </td>
 
 
-                                            <td class="px-6 py-4">
-                                                <!-- <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Edit</a> -->
+                                            <!-- <td class="px-6 py-4">
+                                              
                                                 <button @click="destroy(detail.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
-                                                <!-- <Link :href="route('details.destroy',detail.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</Link> -->
-                                            </td>
+                                               
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -219,7 +219,7 @@ function destroy(id) {
 
                                 <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
                                     <div>
-                                        <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Settlement Details</Link>
+                                        <!-- <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Settlement Details</Link> -->
                                     </div>
 
                                     <div>

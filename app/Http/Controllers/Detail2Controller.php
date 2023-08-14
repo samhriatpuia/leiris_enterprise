@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Detail;
+use App\Models\Detail2;
 use Illuminate\Http\Request;
 
-class DetailController extends Controller
+class Detail2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class DetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Detail $detail)
+    public function show(Detail2 $detail2)
     {
         //
     }
@@ -42,7 +42,7 @@ class DetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Detail $detail)
+    public function edit(Detail2 $detail2)
     {
         //
     }
@@ -50,7 +50,7 @@ class DetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Detail $detail)
+    public function update(Request $request, Detail2 $detail2)
     {
         //
     }
@@ -58,5 +58,8 @@ class DetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    
+    public function destroy(Detail2 $detail2)
+    {
+        //
+    }
 }

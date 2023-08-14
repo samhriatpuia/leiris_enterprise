@@ -5,6 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\Sale2Controller;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\SettlementController;
 use Illuminate\Foundation\Application;
@@ -56,10 +57,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/sales/update', [SaleController::class, 'update'])->name('sales.update');
     Route::get('/invoice_generate/{id}',[SaleController::class,'invoice_generate'])->name('invoice_generate');
 
+
+    // History of sales
+    Route::get('/history', [Sale2Controller::class, 'index'])->name('history.index');
+    Route::post('/history/search',[Sale2Controller::class, 'search'])->name('history.search');
+    Route::get('history/invoice/index/{id}',[Sale2Controller::class, 'invoiceIndex'])->name('history.invoice.index');
+
     Route::get('/details', [DetailController::class, 'index'])->name('details.index');
     Route::get('/details/create', [DetailController::class, 'create'])->name('details.create');
     Route::post('/details/store',[DetailController::class, 'store'])->name('details.store');
-
+    Route::delete('/details/delete/{id}', [SaleController::class, 'destroyDetails'])->name('details.destroy');
     // added
 
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');

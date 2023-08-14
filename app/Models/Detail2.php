@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Detail extends Model
+class Detail2 extends Model
 {
     use HasFactory;
-
 
     protected $fillable = [
         'particulars',
@@ -20,9 +19,4 @@ class Detail extends Model
         'sales_id',
         
     ];
-
-    public function sale()
-    {
-        return $this->belongsTo(Sale::class);
-    }
 }

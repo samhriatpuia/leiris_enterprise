@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\DB;
 
 use Inertia\Inertia;
 use App\Models\Sale;
+use App\Models\Sale2;
 use App\Models\Customer;
 use App\Models\Detail;
+use App\Models\Detail2;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -68,7 +70,17 @@ class SaleController extends Controller
             'scheme' => $request->scheme,
 
             'customer_name' => $customer->name,
-            // 'bank_branch' => $request->bank_branch,
+        ]);
+        Sale2::create([
+            'customer_id' => $request->customer_id,
+            'date' => $request->date,
+            'invoice_number' => $request->invoice_number,
+            'logistic_charge' => $request->logistic_charge,
+            'handling_charge' => $request->handling_charge,
+            'discount' => $request->discount,
+            'scheme' => $request->scheme,
+
+            'customer_name' => $customer->name,
         ]);
         
 
@@ -103,6 +115,7 @@ class SaleController extends Controller
     public function update(Request $request)
     {
         $sale=Sale::findOrFail($request->id);
+        $sale2=Sale2::findOrFail($request->id);
         $request->validate([
             'customer_id' => 'required',
             'date' => 'required',
@@ -128,6 +141,21 @@ class SaleController extends Controller
        
         $sale->save();
         
+
+        $sale2->customer_id = $request->customer_id;
+        $sale2->date = $request->date;
+        $sale2->invoice_number = $request->invoice_number;
+        $sale2->logistic_charge = $request->logistic_charge;
+        $sale2->handling_charge = $request->handling_charge;
+        $sale2->discount = $request->discount;
+        $sale2->scheme = $request->scheme;
+
+        $sale2->customer_name = $customer->name;
+       
+        $sale2->save();
+
+
+
 
         return redirect()->route('sales.index');
     }
@@ -159,6 +187,7 @@ class SaleController extends Controller
         $request->validate([
             'particulars' => 'required',
             'quantity'=>'required',
+            
         ]);
 
         $item=Item::where('id',$request->particulars)->first();
@@ -168,14 +197,29 @@ class SaleController extends Controller
             'quantity' => $request->quantity,
             'unit'=>$item->units_main,
             'price'=>$item->selling_price,
-            'amount'=>($item->selling_price*$request->quantity),
+            'discount'=>$request->discount,
+            'amount'=>($item->selling_price*$request->quantity)-($request->discount),
+            'sales_id'=>$request->sales_id,
+        ]);
+
+
+
+        Detail2::create([
+            'particulars' => $item->name,
+            'quantity' => $request->quantity,
+            'unit'=>$item->units_main,
+            'price'=>$item->selling_price,
+            'discount'=>$request->discount,
+            'amount'=>($item->selling_price*$request->quantity)-($request->discount),
             'sales_id'=>$request->sales_id,
         ]);
 
 
         $sale=Sale::where('id',$request->sales_id)->first();
-
+        $sale2=Sale2::where('id',$request->sales_id)->first();
+        // dd($request->sales_id);
         $details1=Detail::where('sales_id',$sale->id)->get();
+        $details2=Detail2::where('sales_id',$sale->id)->get();
 
         $sale->sub_total=0;
 
@@ -187,8 +231,12 @@ class SaleController extends Controller
         
 
         $sale->grand_total=$sale->sub_total+$sale->logistic_charge+$sale->handling_charge-$sale->discount;
+        
+        $sale2->grand_total=$sale->grand_total;
+        $sale2->sub_total=$sale->sub_total;
        
         $sale->save();
+        $sale2->save();
 
         // dd($sale->sub_total);
         $customer=Customer::where('id',$sale->customer_id)->first();
@@ -320,5 +368,34 @@ class SaleController extends Controller
 
 
         return response()->download(storage_path($date.'.doc'))->deleteFileAfterSend(true);
+    }
+
+
+
+    public function destroyDetails($id)
+    {
+        $detail=Detail::findOrFail($id);
+
+        $sale=Sale::where('id',$detail->sales_id)->first();
+        
+        // $details1=Detail::where('sales_id',$sale->id)->get();
+
+        $sale->sub_total=$sale->sub_total-$detail->amount;
+
+        $sale->grand_total=$sale->grand_total-$detail->amount;
+
+        $detail->delete();
+       
+        $sale->save();
+        
+
+
+        
+        // dd($sale->id);
+        $customer=Customer::where('id',$sale->customer_id)->first();
+        // dd($customer->id);
+        $details=Detail::where('sales_id',$sale->id)->paginate(10);
+        $items=Item::pluck('name','id');
+        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
     }
 }
