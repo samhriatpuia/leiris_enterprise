@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\Sale2Controller;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SettlementController;
 use Illuminate\Foundation\Application;
 
@@ -101,6 +102,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settlements/delete/{id}',[SettlementController::class,'destroy'])->name('settlements.destroy');
 
     
+    Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('/purchases/store',[PurchaseController::class, 'store'])->name('purchases.store');
+    Route::post('/purchases/search',[PurchaseController::class, 'search'])->name('purchases.search');
+    Route::get('purchases/invoice/index/{id}',[PurchaseController::class, 'invoiceIndex'])->name('purchases.invoice.index');
+    Route::post('purchases/invoice/store',[PurchaseController::class, 'invoiceStore'])->name('purchases.invoice.store');
+    Route::get('purchases/edit/{id}',[PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::put('/purchases/update/{id}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::delete('/purchases/delete/{id}',[PurchaseController::class,'destroy'])->name('purchases.destroy');
+    Route::delete('/purchaseDetails/delete/{id}',[PurchaseController::class,'destroyPurchaseDetails'])->name('purchaseDetails.destroy');
 
 });
 
