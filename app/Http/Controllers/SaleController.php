@@ -9,6 +9,7 @@ use App\Models\Sale;
 use App\Models\Sale2;
 use App\Models\Customer;
 use App\Models\Detail;
+use App\Models\Settlement;
 use App\Models\Detail2;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -238,8 +239,24 @@ class SaleController extends Controller
         $sale->save();
         $sale2->save();
 
+
+
         // dd($sale->sub_total);
         $customer=Customer::where('id',$sale->customer_id)->first();
+
+        if (Settlement::where('customer_id', $customer->id)->exists()) {
+           
+            $theSettlement=Settlement::where('customer_id',$customer->id)->first();
+            // dd($theSettlement->grand_total);
+            $theSettlement->grand_total=$theSettlement->grand_total+(($item->selling_price*$request->quantity)-($request->discount));
+            $theSettlement->save();
+        }else{
+            Settlement::create([
+                'grand_total' => $sale->grand_total,
+                'customer_id' => $customer->id,
+            ]);
+        }
+
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
@@ -384,6 +401,10 @@ class SaleController extends Controller
 
         $sale->grand_total=$sale->grand_total-$detail->amount;
 
+        $theSettlement=Settlement::where('customer_id',$sale->customer_id)->first();
+
+        $theSettlement->grand_total=$theSettlement->grand_total-$detail->amount;
+        $theSettlement->save();
         $detail->delete();
        
         $sale->save();

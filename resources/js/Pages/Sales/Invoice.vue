@@ -218,9 +218,9 @@ function destroy(id) {
 
 
                                 <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
-                                    <div>
+                                    <!-- <div>
                                         <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Settlement Details</Link>
-                                    </div>
+                                    </div> -->
 
                                     <div>
                                         <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >

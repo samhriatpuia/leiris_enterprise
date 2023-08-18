@@ -97,11 +97,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/customers/update', [CustomerController::class, 'update'])->name('customers.update');
 
 
-    Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
-    Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');
-    Route::delete('/settlements/delete/{id}',[SettlementController::class,'destroy'])->name('settlements.destroy');
+    // Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
+    // Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');
+    // Route::delete('/settlements/delete/{id}',[SettlementController::class,'destroy'])->name('settlements.destroy');
 
-    
+
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
     Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
     Route::post('/purchases/store',[PurchaseController::class, 'store'])->name('purchases.store');
@@ -113,6 +113,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/purchases/delete/{id}',[PurchaseController::class,'destroy'])->name('purchases.destroy');
     Route::delete('/purchaseDetails/delete/{id}',[PurchaseController::class,'destroyPurchaseDetails'])->name('purchaseDetails.destroy');
 
+
+    Route::get('/settlements', [SettlementController::class, 'index'])->name('settlements.index');
+    Route::get('/settlements/details/{id}', [SettlementController::class, 'settlementDetailsIndex'])->name('settlements.details.index');
+    Route::post('/settlements/details/store', [SettlementController::class, 'settlementDetailsStore'])->name('settlements.details.store');
+    Route::delete('/settlements/details/delete/{id}', [SettlementController::class, 'settlementDetailsDelete'])->name('settlements.details.delete');
 });
 
 

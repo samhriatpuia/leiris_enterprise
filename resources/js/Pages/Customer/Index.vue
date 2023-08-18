@@ -121,12 +121,15 @@ function destroy(id) {
 
 
                                             <td class="px-6 py-4">
-                                                <div class="grid grid-cols-2 md:grid-cols-2 gap-2">
+                                                <div class="grid grid-cols-3 md:grid-cols-3 gap-2">
                                                     <div>
                                                          <Link :href="route('customers.edit',customer.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" >Edit</Link>
                                                     </div>
                                                     <div>
                                                         <button @click="destroy(customer.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
+                                                    </div>
+                                                    <div>
+                                                        <Link :href="route('settlements.details.index',customer.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline">Settlement</Link>
                                                     </div>
                                                 </div>
                                             </td>

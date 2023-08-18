@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('settlements', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('grand_total')->nullable();
-            $table->bigInteger('amount')->nullable();
-            $table->bigInteger('balance')->nullable();
-            $table->string('mode')->nullable();
-            $table->string('payer')->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->unsignedBigInteger('sales_id');
+            // $table->bigInteger('amount')->nullable();
+            
+            $table->unsignedBigInteger('customer_id');
             $table->timestamps();
         });
     }
