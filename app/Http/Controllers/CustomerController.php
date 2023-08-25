@@ -139,4 +139,22 @@ class CustomerController extends Controller
         return Inertia::render('Customer/Index',compact('customers'));
         
     }
+
+
+    public function storeFromInvoice(Request $request)
+    {
+        // dd($request->name);
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+
+        ]);
+        // dd($request->name);
+        Customer::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+        ]);
+        
+        return response()->json(['message' => 'Form data saved successfully']);
+    }
 }

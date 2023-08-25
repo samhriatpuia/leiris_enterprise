@@ -52,10 +52,10 @@ class SaleController extends Controller
             'customer_id' => 'required',
             'date' => 'required',
             'invoice_number' => 'required',
-            'logistic_charge' => 'required',
-            'handling_charge' => 'required',
-            'discount' => 'required',
-            'scheme' => 'required',
+            // 'logistic_charge' => 'required',
+            // 'handling_charge' => 'required',
+            // 'discount' => 'required',
+            // 'scheme' => 'required',
             // 'sub_total' => 'required',
 
         ]);
@@ -65,10 +65,10 @@ class SaleController extends Controller
             'customer_id' => $request->customer_id,
             'date' => $request->date,
             'invoice_number' => $request->invoice_number,
-            'logistic_charge' => $request->logistic_charge,
-            'handling_charge' => $request->handling_charge,
-            'discount' => $request->discount,
-            'scheme' => $request->scheme,
+            'logistic_charge' => 0,
+            'handling_charge' => 0,
+            'discount' => 0,
+            'scheme' => 0,
 
             'customer_name' => $customer->name,
         ]);
