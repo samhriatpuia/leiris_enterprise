@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/customers/delete/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::get('/customers/edit/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/customers/update', [CustomerController::class, 'update'])->name('customers.update');
-    Route::post('/storeFromInvoice',[CustomerController::class, 'storeFromInvoice'])->name('customers.storeFromInvoice');
+
 
     // Route::get('/settlements/{id}', [SettlementController::class, 'index'])->name('settlements.index');
     // Route::post('/settlements/store',[SettlementController::class, 'store'])->name('settlements.store');

@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('gst')->nullable();
-            $table->string('address')->nullable();
+            $table->string('address');
             $table->string('phone');
-            $table->string('bank_account')->nullable();
-            $table->string('bank_ifsc')->nullable();
-            $table->string('bank_name')->nullable();
-            $table->string('bank_branch')->nullable();
+            $table->string('bank_account');
+            $table->string('bank_ifsc');
+            $table->string('bank_name');
+            $table->string('bank_branch');
             $table->timestamps();
         });
     }
