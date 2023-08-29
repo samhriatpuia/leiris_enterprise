@@ -438,7 +438,7 @@ class SaleController extends Controller
         }else{
             Settlement::create([
                 'grand_total' => $sale->grand_total,
-                'customer_id' => $customer->id,
+                'customer_id' => $sale->customer_id,
             ]);
         }
 
