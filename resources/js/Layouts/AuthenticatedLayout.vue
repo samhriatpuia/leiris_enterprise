@@ -36,6 +36,12 @@ const showingNavigationDropdown = ref(false);
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink :href="route('sales.index')" :active="route().current('sales.index')">
+                                    Invoice
+                                </NavLink>
+                            </div>
+                            
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('purchases.index')" :active="route().current('purchases.index')">
                                     Purchases
                                 </NavLink>
@@ -59,17 +65,13 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('sales.index')" :active="route().current('sales.index')">
-                                    Invoice
-                                </NavLink>
-                            </div>
+                            
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('history.index')" :active="route().current('history.index')">
                                     Sale History
                                 </NavLink>
-                            </div>
+                            </div> -->
 
                             <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('settlements.index')" :active="route().current('settlements.index')">
