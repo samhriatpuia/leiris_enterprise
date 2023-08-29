@@ -230,15 +230,6 @@ class SaleController extends Controller
 
 
 
-        // Detail2::create([
-        //     'particulars' => $item->name,
-        //     'quantity' => $request->quantity,
-        //     'unit'=>$item->units_main,
-        //     'price'=>$item->selling_price,
-        //     'discount'=>$request->discount,
-        //     'amount'=>($item->selling_price*$request->quantity)-($request->discount),
-        //     'sales_id'=>$request->sales_id,
-        // ]);
 
 
         $sale=Sale::where('id',$request->sales_id)->first();
@@ -254,33 +245,10 @@ class SaleController extends Controller
             $sale->sub_total=$sale->sub_total+$detail->amount;
         }
 
-        
-
-        // $sale->grand_total=$sale->sub_total+$sale->logistic_charge+$sale->handling_charge-$sale->discount;
-        
-        // $sale2->grand_total=$sale->grand_total;
-        // $sale2->sub_total=$sale->sub_total;
        
         $sale->save();
-        // $sale2->save();
-
-
-
-        // dd($sale->sub_total);
+       
         $customer=Customer::where('id',$sale->customer_id)->first();
-
-        if (Settlement::where('customer_id', $customer->id)->exists()) {
-           
-            $theSettlement=Settlement::where('customer_id',$customer->id)->first();
-            // dd($theSettlement->grand_total);
-            $theSettlement->grand_total=$theSettlement->grand_total+(($item->selling_price*$request->quantity)-($request->discount));
-            $theSettlement->save();
-        }else{
-            Settlement::create([
-                'grand_total' => $sale->grand_total,
-                'customer_id' => $customer->id,
-            ]);
-        }
 
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
@@ -424,12 +392,7 @@ class SaleController extends Controller
 
         $sale->sub_total=$sale->sub_total-$detail->amount;
 
-        // $sale->grand_total=$sale->grand_total-$detail->amount;
-
-        $theSettlement=Settlement::where('customer_id',$sale->customer_id)->first();
-
-        // $theSettlement->grand_total=$theSettlement->grand_total-$detail->amount;
-        // $theSettlement->save();
+        
         $detail->delete();
        
         $sale->save();
@@ -460,6 +423,24 @@ class SaleController extends Controller
         $sale->discount=$request->discount;
         $sale->save();
 
+        if (Settlement::where('customer_id', $sale->customer_id)->exists()) {
+           
+            $theSettlement=Settlement::where('customer_id',$sale->customer_id)->first();
+            
+            $sales=Sale::where('customer_id',$sale->customer_id)->get();
+            $gt=0;
+            foreach($sales as $sale)
+            {
+                $gt=$gt+$sale->grand_total;
+            }
+            $theSettlement->grand_total=$gt;
+            $theSettlement->save();
+        }else{
+            Settlement::create([
+                'grand_total' => $sale->grand_total,
+                'customer_id' => $customer->id,
+            ]);
+        }
 
 
 

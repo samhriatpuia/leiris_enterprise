@@ -117,7 +117,7 @@ class SettlementController extends Controller
         
         $theSettlement=Settlement::where('customer_id',$id)->first();
         // dd($theSettlement->id);
-        $settlementDetails=SettlementDetail::where('settlement_id',$theSettlement->id)->paginate(10);
+        $settlementDetails=SettlementDetail::where('settlement_id',$theSettlement->id)->orderBy('created_at', 'desc')->paginate(10);
         
         return Inertia::render('Settlement/DetailsIndex',compact('settlementDetails','theSettlement'));
     }

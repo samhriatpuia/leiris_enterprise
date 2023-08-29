@@ -6,10 +6,20 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use App\Models\Item;
 
 class CustomerController extends Controller
 {
+    public function dashboard()
+    {
+        
+        $expiryDate = now()->addDays(30);
+
+        $items = Item::where('expiry_date', '<=', $expiryDate)
+                     ->paginate(5);
+
+        return Inertia::render('Dashboard',compact('items'));
+    }
     /**
      * Display a listing of the resource.
      */

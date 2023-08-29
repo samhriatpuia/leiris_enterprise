@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('purchase_price');
             $table->string('selling_price');
             $table->string('batch_no');
-            $table->string('manufacture_date');
-            $table->string('expiry_date');
+            $table->date('manufacture_date');
+            $table->date('expiry_date');
             $table->string('units_main');
             $table->string('units_secondary');
             $table->string('units_relation');
