@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/details/create', [DetailController::class, 'create'])->name('details.create');
     Route::post('/details/store',[DetailController::class, 'store'])->name('details.store');
     Route::delete('/details/delete/{id}', [SaleController::class, 'destroyDetails'])->name('details.destroy');
+
+    Route::post('/sales/invoice/calculate',[SaleController::class, 'calculate'])->name('sales.calculate');
     // added
 
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');

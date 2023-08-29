@@ -5,6 +5,8 @@ import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 import { useForm } from "@inertiajs/vue3";
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import axios from 'axios';
 
 const props = defineProps({
     
@@ -21,29 +23,71 @@ const props = defineProps({
         items: Object
     }
 });
-
 const form = useForm({
     particulars: '',
-    // unit: '',
+    unit: '',
     quantity: '',
     discount: '',
-    // amount: '',
+    price: '',
     sales_id: props.sale.id,
 
 });
 
-const submit = () => {
-    form.post(route("sales.invoice.store"),{
-        preserveScroll: true,
-        onSuccess: () => form.reset(), // reset form if everything went OK
-    });
+
+
+
+const salesForm = ref({
+    id:props.sale.id,
+    logistic_charge: props.sale.logistic_charge,
+    handling_charge: props.sale.handling_charge,
+    discount: props.sale.discount,
+    
+});
+
+const submitSaleForm = async () => {
+  try {
+    const response = await router.post('/sales/invoice/calculate', salesForm.value);
+    console.log('Response from server (Customer):', response);
+  } catch (error) {
+    console.error('Error while submitting customer form:', error);
+  }
 };
 
+
+// *******
+const invoiceForm = ref({
+    particulars: '',
+    unit: '',
+    quantity: '',
+    discount: '',
+    price: '',
+    sales_id: props.sale.id,
+});
+
+const submitInvoiceForm = async () => {
+  try {
+    const response = await router.post('/sales/invoice/store', invoiceForm.value);
+
+    console.log('Response from server (Customer):', response);
+    invoiceForm.value = {
+        particulars: '',
+        unit: '',
+        quantity: '',
+        discount: '',
+        price: '',
+        sales_id: props.sale.id,
+    };
+  } catch (error) {
+    console.error('Error while submitting customer form:', error);
+  }
+};
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {
         form.delete(route('details.destroy', id));
     }
 }
+
+
 </script>
 
 <template>
@@ -58,9 +102,9 @@ function destroy(id) {
                             <div>
                                 <b>Customer Name:</b> {{ customer.name }}
                             </div>
-                            <div>
+                            <!-- <div>
                                 <b>Address:</b> {{ customer.address }}
-                            </div>
+                            </div> -->
                             <div>
                                 <b>Phone No.:</b> {{ customer.phone }}
                             </div>
@@ -73,13 +117,13 @@ function destroy(id) {
                             <div>
                                 <b>Date:</b> {{ sale.date }}
                             </div>
-                            <div>
+                            <!-- <div>
                                 <b>Sub-total:</b> {{ sale.sub_total }}
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-8">
-                            <div>
+                            <!-- <div>
                                 <b>Logistic Charge:</b> {{ sale.logistic_charge }}
                             </div>
                             <div>
@@ -87,44 +131,63 @@ function destroy(id) {
                             </div>
                             <div>
                                 <b>Discount</b> {{ sale.discount }}
-                            </div>
+                            </div> -->
                         </div>
 
                        
                         <div class="mb-4">
-                            <form @submit.prevent="submit" class="border border-gray-200 rounded-lg px-7">
+                            <form @submit.prevent="submitInvoiceForm" class="border border-gray-200 rounded-lg px-7">
                                 <div class="mt-5">
                                     <div class="">
                                         <label for="quantity" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">ID(Do not Change)</label>
-                                        <input type="hidden " v-model="form.sales_id" name="sales_id" disabled>
+                                        <input type="hidden " v-model="invoiceForm.sales_id" name="sales_id" disabled>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+                                <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
                                     <div class="mt-5">
                                         <div class="mb-6">
-                                            <select id="particulars" v-model="form.particulars" name="particulars" for='particulars' class="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
+                                            <label for="unit" class="block text-sm font-medium text-gray-900 dark:text-white">Select Item</label>
+                                            <select id="particulars" v-model="invoiceForm.particulars" name="particulars" for='particulars' class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
                                                 <option value="" disabled selected hidden> Choose Item</option>
                                                 <option v-for="(name, id) in items" :key="id" :value="id">{{ name }}</option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="mt-5">
+                                        <div class="mb-6">
+                                            <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
+                                            <input type="text" v-model="invoiceForm.unit" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <div class="mb-6">
+                                            <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                            <input type="text" v-model="invoiceForm.price" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                        </div>
+                                    </div>
+
+
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
-                                            <input type="text" v-model="form.quantity" id="quantity" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                            <input type="text" v-model="invoiceForm.quantity" id="quantity" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                                         </div>
                                     </div>
 
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="discount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount</label>
-                                            <input type="text" v-model="form.discount" id="discount" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                            <input type="text" v-model="invoiceForm.discount" id="discount" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                                         </div>
                                     </div>
                                     
                                 </div>
                             
-                                <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">save</button>
+                                <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Add
+                                </button>
                             </form>
                         </div>
 
@@ -199,8 +262,6 @@ function destroy(id) {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="float-right" style="margin-right:315px">Sub-Total: {{ sale.sub_total }}</div> <br>
-                                <div class="float-right" style="margin-right:315px">Grand-Total: {{ sale.grand_total }}</div>
                                 <div class="m-2 p-2">
                                   
                                     <div class="flex">
@@ -215,17 +276,48 @@ function destroy(id) {
                                     </div>
                                     
                                 </div>
+                                <form @submit.prevent="submitSaleForm">
+                                    <div class="float-right" style="margin-right:370px">Sub-Total: {{ sale.sub_total }}</div> <br>
+                                    
+                                    <div class="mt-2 float-right " style="margin-right:315px">
+                                        <div class="grid grid-cols-2 md:grid-cols-2 gap-1">
+                                            <label for="logistic_charge" class="mt-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Logistic charge</label>
+                                            <input type="text" v-model="salesForm.logistic_charge" id="logistic_charge" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                        </div>
+                                    </div> <br>
 
+                                    <div class="float-right" style="margin-right:315px">
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
+                                            <label for="handling_charge" class="mt-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Handling charge</label>
+                                            <input type="text" v-model="salesForm.handling_charge" id="handling_charge" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                        </div>    
+                                    </div> <br>
+
+                                    <div class="float-right" style="margin-right:315px">
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
+                                            <label for="discount" class="mt-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount</label>
+                                            <input type="text" v-model="salesForm.discount" id="discount" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                            <br>
+                                            <div >Grand Total: {{ sale.grand_total }}</div>
+                                            <br>
+                                            <button type="submit" class="mt-3 mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Calculate</button>
+                                        
+                                        </div>    
+                                    </div> <br>
+                                  
+                                    
+                                </form>
 
                                 <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
-                                    <!-- <div>
-                                        <Link :href="route('settlements.index',sale.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Settlement Details</Link>
-                                    </div> -->
+                                   
 
                                     <div>
                                         <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >
                                             <div><u>Download Invoice</u></div>
                                         </a>
+                                    </div>
+                                    <div>
+                                        
                                     </div>
 
                                 </div>

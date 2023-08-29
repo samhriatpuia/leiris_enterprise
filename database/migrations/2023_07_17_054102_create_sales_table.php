@@ -16,9 +16,9 @@ return new class extends Migration
             
             $table->string('date');
             $table->string('invoice_number');
-            $table->bigInteger('logistic_charge')->nullable();
-            $table->bigInteger('handling_charge')->nullable();
-            $table->bigInteger('discount')->nullable();
+            $table->bigInteger('logistic_charge')->default(0);
+            $table->bigInteger('handling_charge')->default(0);
+            $table->bigInteger('discount')->default(0);
             $table->string('scheme')->nullable();
             $table->bigInteger('sub_total')->nullable();
             $table->bigInteger('grand_total')->nullable();
