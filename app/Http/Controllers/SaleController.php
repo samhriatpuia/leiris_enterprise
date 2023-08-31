@@ -47,12 +47,14 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->new_name);
         // dd($request->invoice_number);
         $request->validate([
             'date' => 'required',
             'invoice_number' => 'required',
             'customer_id' => 'required_without:new_name',
             'new_name' => 'required_without:customer_id',
+            
             
         ]);
         
@@ -66,6 +68,7 @@ class SaleController extends Controller
                 'invoice_number' => $request->invoice_number,
     
                 'customer_name' => $customer->name,
+                
             ]);
 
             $sale=Sale::where('customer_id',$request->customer_id)->where('invoice_number',$request->invoice_number)->first();
@@ -80,6 +83,7 @@ class SaleController extends Controller
             // dd($request->new_name);
             Customer::create([
                 'name' => $request->new_name,
+                'phone'=>$request->phone,
             ]);
             $customer=Customer::where('name',$request->new_name)->latest()->first();
 

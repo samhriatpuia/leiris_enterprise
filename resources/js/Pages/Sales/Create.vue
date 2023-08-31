@@ -4,6 +4,24 @@ import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 import { useForm } from "@inertiajs/vue3";
+import { ref, onMounted, onUnmounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+
+const isModalOpen = ref(false);
+
+
+const { visit, inertia } = usePage(); // Add 'inertia' here
+
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  customer.value.name = '';
+  customer.value.phone = '';
+};
+
 
 function getTodayFormattedDate() {
   const today = new Date();
@@ -12,11 +30,17 @@ function getTodayFormattedDate() {
   const day = today.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
 const props = defineProps({
     
     customers: {
         customers: Object,
-    }
+    },
+    methods: {
+    closeModal() {
+      this.$emit('close');
+    },
+  },
 });
 
 const form = useForm({
@@ -29,11 +53,14 @@ const form = useForm({
     scheme : '',
     sub_total : '',
     new_name: '',
+    phone:'',
 });
 
 const submit = () => {
     form.post(route("sales.store"));
 };
+
+
 </script>
 
 <template>
@@ -74,52 +101,33 @@ const submit = () => {
                                         </select>
 
                                     </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.new_name" name="new_name" id="new_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-                                        <label for="new_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            New Customer Name
-                                        </label>
+                                    <div >
+                                        <div @click="openModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Add Customer
+                                        </div>
+                                            <portal to="modals">
+                                            <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+                                                <div class="modal-container bg-white w-1/2 p-6 rounded shadow-lg">
+                                                    <h2 class="text-lg font-semibold mb-4">Create New Customer</h2>
 
-                                    </div>
-                                </div>
+                                                
+                                                    <div class="mb-6">
+                                                        <label for="new_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer Name</label>
+                                                        <input v-model="form.new_name" type="text" id="new_name" name="new_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                                                        <!-- <div v-if="errors.name">{{ errors.name }}</div> -->
+                                                    </div>
+                                                                                        
+                                                    <div class="mb-6">
+                                                        <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                                        <input v-model="form.phone" type="text" id="phone" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                        <!-- <div v-if="errors.phone">{{ errors.phone }}</div> -->
+                                                    </div>
+                                                                                        
 
-                                
-                               
-                                
-
-                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
-                                    
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.handling_charge" name="handling_charge" id="handling_charge" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <label for="handling_charge" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            Handling Charge
-                                        </label>
-
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.discount" name="discount" id="discount" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <label for="discount" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                           Discount
-                                        </label>
-
-                                    </div>
-                                </div> -->
-
-                                <div class="grid md:grid-cols-2 md:gap-6">
-                                    
-                                    <!-- <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.scheme" name="scheme" id="scheme" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <label for="scheme" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            Scheme
-                                        </label>
-
-                                    </div> -->
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <!-- <input type="text" v-model="form.sub_total" name="sub_total" id="sub_total" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <label for="sub_total" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                            Sub- Total
-                                        </label> -->
-
+                                                    <button @click="closeModal" class="mt-4 text-gray-500 hover:text-gray-700">Save</button>
+                                                </div>
+                                            </div>
+                                        </portal>
                                     </div>
                                 </div>
 
@@ -128,10 +136,15 @@ const submit = () => {
                                     Next
                                 </button>
                             </form>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
+        
     </AuthenticatedLayout>
 </template>
