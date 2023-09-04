@@ -64,7 +64,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Create Invoice" />
 
     <AuthenticatedLayout>
         <div class="py-12">
@@ -105,7 +105,7 @@ const submit = () => {
                                         <div @click="openModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                             Add Customer
                                         </div>
-                                            <portal to="modals">
+                                        <portal to="modals">
                                             <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
                                                 <div class="modal-container bg-white w-1/2 p-6 rounded shadow-lg">
                                                     <h2 class="text-lg font-semibold mb-4">Create New Customer</h2>
@@ -113,13 +113,13 @@ const submit = () => {
                                                 
                                                     <div class="mb-6">
                                                         <label for="new_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer Name</label>
-                                                        <input v-model="form.new_name" type="text" id="new_name" name="new_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                                                        <input v-model="form.new_name" type="text" id="new_name" name="new_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
                                                         <!-- <div v-if="errors.name">{{ errors.name }}</div> -->
                                                     </div>
                                                                                         
                                                     <div class="mb-6">
                                                         <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                                        <input v-model="form.phone" type="text" id="phone" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                        <input v-model="form.phone" type="text" id="phone" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                         <!-- <div v-if="errors.phone">{{ errors.phone }}</div> -->
                                                     </div>
                                                                                         

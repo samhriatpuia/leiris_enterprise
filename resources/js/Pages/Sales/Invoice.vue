@@ -7,6 +7,8 @@ import { useForm } from "@inertiajs/vue3";
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import axios from 'axios';
+import { usePage } from '@inertiajs/vue3';
+
 
 const props = defineProps({
     
@@ -33,7 +35,20 @@ const form = useForm({
 
 });
 
+const isModalOpen = ref(false);
 
+
+const { visit, inertia } = usePage(); // Add 'inertia' here
+
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  customer.value.name = '';
+  customer.value.phone = '';
+};
 
 
 const salesForm = ref({
@@ -76,6 +91,8 @@ const submitInvoiceForm = async () => {
         discount: '',
         price: '',
         sales_id: props.sale.id,
+        new_name: '',
+        batch:'',
     };
   } catch (error) {
     console.error('Error while submitting customer form:', error);
@@ -117,21 +134,11 @@ function destroy(id) {
                             <div>
                                 <b>Date:</b> {{ sale.date }}
                             </div>
-                            <!-- <div>
-                                <b>Sub-total:</b> {{ sale.sub_total }}
-                            </div> -->
+                           
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-8">
-                            <!-- <div>
-                                <b>Logistic Charge:</b> {{ sale.logistic_charge }}
-                            </div>
-                            <div>
-                                <b>Handling Charge</b> {{ sale.handling_charge }}
-                            </div>
-                            <div>
-                                <b>Discount</b> {{ sale.discount }}
-                            </div> -->
+                           
                         </div>
 
                        
@@ -150,6 +157,7 @@ function destroy(id) {
                                             <select id="particulars" v-model="invoiceForm.particulars" name="particulars" for='particulars' class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
                                                 <option value="" disabled selected hidden> Choose Item</option>
                                                 <option v-for="(name, id) in items" :key="id" :value="id">{{ name }}</option>
+                                                <!-- <option @click="openModal" class="text-green-900"><b>New Item</b></option> -->
                                             </select>
                                         </div>
                                     </div>
@@ -185,9 +193,43 @@ function destroy(id) {
                                     
                                 </div>
                             
-                                <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Add
-                                </button>
+                                <div class="grid grid-cols-4 md:grid-cols-3 gap-1">
+                                    <div>
+                                        <button type="submit" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Add
+                                        </button>
+                                    </div>
+                                    <div @click="openModal" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        New Item
+                                    </div>
+                                </div>
+
+                                
+                                <portal to="modals">
+                                    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+                                        <div class="modal-container bg-white w-1/2 p-6 rounded shadow-lg">
+                                            <h2 class="text-lg font-semibold mb-4">Create New Item</h2>
+
+                                                
+                                            <div class="mb-6">
+                                                <label for="new_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item Name</label>
+                                                <input v-model="invoiceForm.new_name" type="text" id="new_name" name="new_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
+                                                <!-- <div v-if="errors.name">{{ errors.name }}</div> -->
+                                            </div>
+                                                                                        
+                                            <div class="mb-6">
+                                                <label for="batch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batch</label>
+                                                <input v-model="invoiceForm.batch" type="text" id="batch" name="batch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <!-- <div v-if="errors.phone">{{ errors.phone }}</div> -->
+                                            </div>
+                                                                                        
+
+                                            <button @click="closeModal" class="mt-4 text-gray-500 hover:text-gray-700">Save</button>
+                                        </div>
+                                    </div>
+                                </portal>
+
+                               
                             </form>
                         </div>
 
