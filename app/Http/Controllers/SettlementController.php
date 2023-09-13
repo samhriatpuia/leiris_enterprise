@@ -114,12 +114,20 @@ class SettlementController extends Controller
 
     public function settlementDetailsIndex($id)
     {
-        
+        // dd($id);
         $theSettlement=Settlement::where('customer_id',$id)->first();
+        if(is_null($theSettlement)){
+            return abort(404);
+         }
+         else
+         {
+            $settlementDetails=SettlementDetail::where('settlement_id',$theSettlement->id)->orderBy('created_at', 'desc')->paginate(10);
+            $theBalance=SettlementDetail::where('settlement_id',$theSettlement->id)->latest()->first();
+            // dd($theBalance->balance);
+            return Inertia::render('Settlement/DetailsIndex',compact('settlementDetails','theSettlement','theBalance'));
+         }
         // dd($theSettlement->id);
-        $settlementDetails=SettlementDetail::where('settlement_id',$theSettlement->id)->orderBy('created_at', 'desc')->paginate(10);
         
-        return Inertia::render('Settlement/DetailsIndex',compact('settlementDetails','theSettlement'));
     }
 
 
@@ -137,12 +145,22 @@ class SettlementController extends Controller
         ]);
 
         $theSettlement=Settlement::where('id',$request->settlement_id)->first();
-
+       
         $remaining=0;
         if (SettlementDetail::where('settlement_id', $theSettlement->id)->exists())
         {
-            $theSD=SettlementDetail::latest()->first();
-            $remaining=$theSD->balance-$request->amount;
+            $allSettlements=SettlementDetail::where('settlement_id', $theSettlement->id)->get();
+            $allPaid=0;
+            foreach($allSettlements as $allSettlement)
+            {
+                $allPaid=$allPaid+$allSettlement->amount;
+            }
+
+            // dd($allPaid);
+            // $theSD=SettlementDetail::latest()->first();
+
+            $remaining=($theSettlement->grand_total)-($allPaid+$request->amount);
+            // dd($remaining);
 
         }else{
             $remaining=$theSettlement->grand_total-$request->amount;
@@ -161,7 +179,11 @@ class SettlementController extends Controller
             'balance'=>$remaining,
         ]);
 
-        // dd($request->settlement_id);
-        return redirect()->route('settlements.details.index',$request->settlement_id);
+        // dd($theSettlement->id);
+        // $theSettlement=Settlement::where('customer_id',$id)->first();
+        $settlementDetails=SettlementDetail::where('settlement_id',$theSettlement->id)->orderBy('created_at', 'desc')->paginate(10);
+        $theBalance=SettlementDetail::where('settlement_id',$theSettlement->id)->latest()->first();
+        
+        return Inertia::render('Settlement/DetailsIndex',compact('settlementDetails','theSettlement','theBalance'));
     }
 }

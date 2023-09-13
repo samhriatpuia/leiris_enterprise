@@ -12,6 +12,9 @@ const props = defineProps({
     },
     theSettlement: {
         type: Object,
+    },
+    theBalance: {
+        type: Object,
     }
 });
 
@@ -51,7 +54,8 @@ const submit = () => {
                     <div class="p-6 text-gray-900">
 
                         <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
-                            Grand Total: {{ theSettlement.grand_total }}
+                            Grand Total: {{ theSettlement.grand_total }} <br>
+                            Balance: {{ theBalance.balance }}
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
                             <div>

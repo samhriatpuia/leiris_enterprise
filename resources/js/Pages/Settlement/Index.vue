@@ -19,7 +19,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Sales" />
+    <Head title="Settlement" />
 
     <AuthenticatedLayout>
         <div class="py-12">
