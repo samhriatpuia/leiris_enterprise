@@ -36,6 +36,7 @@ const form = useForm({
 });
 
 const isModalOpen = ref(false);
+const displayedData = ref(''); // Initialize with an empty string
 
 
 const { visit, inertia } = usePage(); // Add 'inertia' here
@@ -46,8 +47,12 @@ const openModal = () => {
 
 const closeModal = () => {
   isModalOpen.value = false;
+  
+  displayedData.value = `Item Name: ${invoiceForm.value.new_name}, Batch: ${invoiceForm.value.batch}`;
+
   customer.value.name = '';
   customer.value.phone = '';
+  
 };
 
 
@@ -93,6 +98,12 @@ const submitInvoiceForm = async () => {
         sales_id: props.sale.id,
         new_name: '',
         batch:'',
+        stock_opening:'',
+        selling_price:'',
+        units_secondary:'',
+        units_main:'',
+        units_relation:'',
+        secondary_unit_price:'',
     };
   } catch (error) {
     console.error('Error while submitting customer form:', error);
@@ -138,7 +149,7 @@ function destroy(id) {
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-8">
-                           
+                            
                         </div>
 
                        
@@ -192,6 +203,11 @@ function destroy(id) {
                                     </div>
                                     
                                 </div>
+
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2 mb-2">
+                                    <!-- <label for="displayedDataLabel">Entered Data:</label> -->
+                                    <span id="displayedDataLabel" v-text="displayedData"></span>
+                                </div>
                             
                                 <div class="grid grid-cols-4 md:grid-cols-3 gap-1">
                                     <div>
@@ -206,7 +222,7 @@ function destroy(id) {
 
                                 
                                 <portal to="modals">
-                                    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+                                    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
                                         <div class="modal-container bg-white w-1/2 p-6 rounded shadow-lg">
                                             <h2 class="text-lg font-semibold mb-4">Create New Item</h2>
 
@@ -220,7 +236,51 @@ function destroy(id) {
                                             <div class="mb-6">
                                                 <label for="batch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batch</label>
                                                 <input v-model="invoiceForm.batch" type="text" id="batch" name="batch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <!-- <div v-if="errors.phone">{{ errors.phone }}</div> -->
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="stock_opening" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">stock opening</label>
+                                                <input v-model="invoiceForm.stock_opening" type="text" id="stock_opening" name="stock_opening" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="selling_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">selling price</label>
+                                                <input v-model="invoiceForm.selling_price" type="text" id="selling_price" name="selling_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="units_main" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit(main)</label>
+                                                <select id="units_main" v-model="form.units_main" name="units_main" for='units_main' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                                    <option value="" disabled selected hidden>Choose Units(main)</option>
+                                                    <option value="BAG">Bag</option>
+                                                    <option value="CASE">Case</option>
+                                                    <option value="PIECE">Piece</option>
+                                                    <option value="TIN">Tin</option>
+                                                    <option value="PACKET">Packet</option>
+
+                                                </select>
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="units_secondary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">units secondary</label>
+                                                <input v-model="invoiceForm.units_secondary" type="text" id="units_secondary" name="units_secondary" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="secondary_unit_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">secondary unit price</label>
+                                                <input v-model="invoiceForm.secondary_unit_price" type="text" id="secondary_unit_price" name="secondary_unit_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label for="units_relation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">units relation</label>
+                                                <input v-model="invoiceForm.units_relation" type="text" id="units_relation" name="units_relation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                
                                             </div>
                                                                                         
 

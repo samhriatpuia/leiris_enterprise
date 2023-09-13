@@ -23,5 +23,6 @@ class Item extends Model
         'units_main',
         'units_secondary',
         'units_relation',
+        'secondary_unit_price',
     ];
 }

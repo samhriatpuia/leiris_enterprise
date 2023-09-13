@@ -52,6 +52,7 @@ class ItemController extends Controller
             'units_main' => 'required',
             'units_secondary' => 'required',
             'units_relation' => 'required',
+            'secondary_unit_price'=> 'required',
 
         ]);
         // dd($request->name);
@@ -70,6 +71,7 @@ class ItemController extends Controller
             'units_main' => $request->units_main,
             'units_secondary' => $request->units_secondary,
             'units_relation' => $request->units_relation,
+            'secondary_unit_price'=> $request->secondary_unit_price,
         ]);
         sleep(1);
 
@@ -117,6 +119,7 @@ class ItemController extends Controller
             'units_main' => 'required',
             'units_secondary' => 'required',
             'units_relation' => 'required',
+            'secondary_unit_price'=>'required',
         ]);
 
        
@@ -133,6 +136,7 @@ class ItemController extends Controller
         $item->units_main = $request->units_main;
         $item->units_secondary = $request->units_secondary;
         $item->units_relation = $request->units_relation;
+        $item->secondary_unit_price=$request->secondary_unit_price;
        
         $item->save();
         

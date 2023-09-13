@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('units_main')->nullable();
             $table->string('units_secondary')->nullable();
             $table->string('units_relation')->nullable();
+            $table->string('secondary_unit_price')->nullable();
             $table->timestamps();
         });
     }

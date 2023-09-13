@@ -244,6 +244,7 @@ class SaleController extends Controller
             $item=new Item();
             $item->name=$request->new_name;
             $item->batch_no=$request->batch;
+            
             $item->save();
             // dd($request->sales_id);
             Detail::create([
