@@ -40,7 +40,7 @@ const showingNavigationDropdown = ref(false);
                                     Invoice
                                 </NavLink>
                             </div>
-                            
+                            @if(Auth::user()->role != 'Administrator)
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('purchases.index')" :active="route().current('purchases.index')">
                                     Purchases
@@ -65,7 +65,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
 
-                            
+                           @endif 
 
                             <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('history.index')" :active="route().current('history.index')">
