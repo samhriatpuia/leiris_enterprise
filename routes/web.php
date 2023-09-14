@@ -74,22 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/sales/invoice/calculate',[SaleController::class, 'calculate'])->name('sales.calculate');
     // added
 
-    Route::get('/items', [ItemController::class, 'index'])->name('items.index');
-    Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
-    Route::post('/items/store',[ItemController::class, 'store'])->name('items.store');
-
-    Route::post('/items/search',[ItemController::class, 'search'])->name('items.search');
-    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
-    Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
-    Route::put('/items/update', [ItemController::class, 'update'])->name('items.update');
-
-    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
-    Route::post('/groups/store',[GroupController::class, 'store'])->name('groups.store');
-    Route::post('/groups/search',[GroupController::class, 'search'])->name('groups.search');
-    Route::delete('/groups/delete/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
-    Route::get('/groups/edit/{id}', [GroupController::class, 'edit'])->name('groups.edit');
-    Route::put('/groups/update', [GroupController::class, 'update'])->name('groups.update');
+    
 
 
     Route::get('/customers',[CustomerController::class, 'index'])->name('customers.index');
@@ -124,6 +109,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settlements/details/delete/{id}', [SettlementController::class, 'settlementDetailsDelete'])->name('settlements.details.delete');
 });
 
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+    Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+    Route::post('/items/store',[ItemController::class, 'store'])->name('items.store');
+
+    Route::post('/items/search',[ItemController::class, 'search'])->name('items.search');
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
+    Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
+    Route::put('/items/update', [ItemController::class, 'update'])->name('items.update');
+
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::post('/groups/store',[GroupController::class, 'store'])->name('groups.store');
+    Route::post('/groups/search',[GroupController::class, 'search'])->name('groups.search');
+    Route::delete('/groups/delete/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
+    Route::get('/groups/edit/{id}', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::put('/groups/update', [GroupController::class, 'update'])->name('groups.update');
+});
 
 
 
