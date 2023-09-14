@@ -201,7 +201,7 @@ class SaleController extends Controller
             // 'particulars' => 'required',
             'quantity'=>'required',
             'unit'=>'required',
-            'price'=>'required'
+            // 'price'=>'required'
             
         ]);
 
@@ -209,13 +209,29 @@ class SaleController extends Controller
         {
             $item=Item::where('id',$request->particulars)->first();
             // dd($request->sales_id);
+            
+
+            if($request->unit=='primary')
+            {
+                $thePrice=$item->selling_price;
+                $theUnit=$item->units_main;
+                $item->stock_opening=(int)$item->stock_opening-(int)$request->quantity;
+                $item->save();
+                // dd($thePrice);
+            }
+            else
+            {
+                $thePrice=$item->secondary_unit_price;
+                $theUnit=$item->units_secondary;
+            }
+            // dd($thePrice);
             Detail::create([
                 'particulars' => $item->name,
                 'quantity' => $request->quantity,
-                'unit'=>$request->unit,
-                'price'=>$request->price,
+                'unit'=>$theUnit,
+                'price'=>$thePrice,
                 'discount'=>$request->discount,
-                'amount'=>($request->price*$request->quantity)-($request->discount),
+                'amount'=>($thePrice*$request->quantity)-($request->discount),
                 'sales_id'=>$request->sales_id,
             ]);
 
@@ -241,19 +257,41 @@ class SaleController extends Controller
         }
         else
         {
-            $item=new Item();
-            $item->name=$request->new_name;
-            $item->batch_no=$request->batch;
-            
-            $item->save();
+            $newitem=new Item();
+            $newitem->name=$request->new_name;
+            $newitem->batch_no=$request->batch;
+            $newitem->stock_opening =$request->stock_opening ;
+            $newitem->selling_price =$request->selling_price ;
+            $newitem->units_secondary =$request->units_secondary ;
+            $newitem->units_main =$request->units_main ;
+            $newitem->units_relation =$request->units_relation ;
+            $newitem->secondary_unit_price =$request->secondary_unit_price ;
+            $newitem->save();
+
+            $theitem=Item::where('name',$request->new_name)->first();
+            // dd($item->name);
+            if($request->unit=='primary')
+            {
+                $thePrice=$theitem->selling_price;
+                $theUnit=$theitem->units_main;
+                $theitem->stock_opening=(int)$theitem->stock_opening-(int)$request->quantity;
+                $theitem->save();
+                // dd($theUnit);
+            }
+            else
+            {
+                $thePrice=$item->secondary_unit_price;
+                $theUnit=$item->units_secondary;
+            }
+
             // dd($request->sales_id);
             Detail::create([
-                'particulars' => $item->name,
+                'particulars' => $theitem->name,
                 'quantity' => $request->quantity,
-                'unit'=>$request->unit,
-                'price'=>$request->price,
+                'unit'=>$theUnit,
+                'price'=>$thePrice,
                 'discount'=>$request->discount,
-                'amount'=>($request->price*$request->quantity)-($request->discount),
+                'amount'=>($thePrice*$request->quantity)-($request->discount),
                 'sales_id'=>$request->sales_id,
             ]);
 

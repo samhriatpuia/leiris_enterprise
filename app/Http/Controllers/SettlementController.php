@@ -156,9 +156,7 @@ class SettlementController extends Controller
                 $allPaid=$allPaid+$allSettlement->amount;
             }
 
-            // dd($allPaid);
-            // $theSD=SettlementDetail::latest()->first();
-
+            
             $remaining=($theSettlement->grand_total)-($allPaid+$request->amount);
             // dd($remaining);
 

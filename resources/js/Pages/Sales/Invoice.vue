@@ -161,7 +161,7 @@ function destroy(id) {
                                         <input type="hidden " v-model="invoiceForm.sales_id" name="sales_id" disabled>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
+                                <div class="grid grid-cols-4 md:grid-cols-4 gap-4">
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block text-sm font-medium text-gray-900 dark:text-white">Select Item</label>
@@ -176,16 +176,22 @@ function destroy(id) {
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
-                                            <input type="text" v-model="invoiceForm.unit" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                            <!-- <input type="text" v-model="invoiceForm.unit" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required> -->
+                                            <select id="unit" v-model="invoiceForm.unit" name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Units(main)">
+                                                <option value="" disabled selected hidden>Choose Unit</option>
+                                                <option value="primary">Primary(Bag,Case,Tin,Packet)</option>
+                                                <option value="secondary">Secondary(Kg, liter)</option>
+                                                
+                                            </select>
                                         </div>
                                     </div>
 
-                                    <div class="mt-5">
+                                    <!-- <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                                             <input type="text" v-model="invoiceForm.price" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                     <div class="mt-5">
@@ -205,8 +211,9 @@ function destroy(id) {
                                 </div>
 
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2 mb-2">
-                                    <!-- <label for="displayedDataLabel">Entered Data:</label> -->
-                                    <span id="displayedDataLabel" v-text="displayedData"></span>
+                                    
+                                    <!-- <span id="displayedDataLabel" v-text="displayedData"></span> -->
+                                    <span id="displayedDataLabel" v-if="displayedData">{{ displayedData }}</span>
                                 </div>
                             
                                 <div class="grid grid-cols-4 md:grid-cols-3 gap-1">
@@ -253,7 +260,7 @@ function destroy(id) {
 
                                             <div class="mb-6">
                                                 <label for="units_main" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit(main)</label>
-                                                <select id="units_main" v-model="form.units_main" name="units_main" for='units_main' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                                <select id="units_main" v-model="invoiceForm.units_main" name="units_main" for='units_main' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                                                     <option value="" disabled selected hidden>Choose Units(main)</option>
                                                     <option value="BAG">Bag</option>
                                                     <option value="CASE">Case</option>

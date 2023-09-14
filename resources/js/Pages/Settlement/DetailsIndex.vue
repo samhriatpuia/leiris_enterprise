@@ -55,7 +55,8 @@ const submit = () => {
 
                         <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
                             Grand Total: {{ theSettlement.grand_total }} <br>
-                            Balance: {{ theBalance.balance }}
+                            <p v-if="theBalance && theBalance.balance">{{ theBalance.balance }}</p>
+                            <p v-else></p>
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
                             <div>
