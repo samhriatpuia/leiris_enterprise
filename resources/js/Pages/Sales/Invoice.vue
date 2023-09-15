@@ -82,6 +82,7 @@ const invoiceForm = ref({
     discount: '',
     price: '',
     sales_id: props.sale.id,
+    
 });
 
 const submitInvoiceForm = async () => {
@@ -105,6 +106,7 @@ const submitInvoiceForm = async () => {
         units_relation:'',
         secondary_unit_price:'',
     };
+    displayedData.value = '';
   } catch (error) {
     console.error('Error while submitting customer form:', error);
   }

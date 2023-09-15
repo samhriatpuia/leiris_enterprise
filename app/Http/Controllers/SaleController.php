@@ -451,8 +451,16 @@ class SaleController extends Controller
     {
         $detail=Detail::findOrFail($id);
 
+        // dd($detail->quantity);
+        $item=Item::where('name',$detail->particulars)->first();
+        // dd($item->name);
         $sale=Sale::where('id',$detail->sales_id)->first();
-
+        if($detail->unit == "BAG" || $detail->unit == "CASE"|| $detail->unit == "PIECE"|| $detail->unit == "TIN"|| $detail->unit == "PACKET")
+        {
+           $item->stock_opening=$item->stock_opening+$detail->quantity;
+           $item->save();
+        }
+        
         $sale->sub_total=$sale->sub_total-$detail->amount;
 
         
