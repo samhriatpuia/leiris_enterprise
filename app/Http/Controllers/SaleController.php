@@ -335,6 +335,8 @@ class SaleController extends Controller
         $scheme=htmlspecialchars($sale->scheme);
         $sub_total=htmlspecialchars($sale->sub_total);
         $grand_total=htmlspecialchars($sale->grand_total);
+        $Paid=htmlspecialchars($sale->paid);
+        $currentBalance=htmlspecialchars($sale->current_balance);
 
         $customer=Customer::where('id',$sale->customer_id)->first();
         $customer_name=htmlspecialchars($customer->name);
@@ -421,6 +423,16 @@ class SaleController extends Controller
         $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
         $section->addText($text4, null, array('alignment' => $alignment));
 
+        $text7 = 'Cash Tendered: '.$Paid;
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $section->addText($text7, null, array('alignment' => $alignment));
+
+
+        $text8 = 'Current Balance: '.$currentBalance;
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $section->addText($text8, null, array('alignment' => $alignment));
+
+
         // Set border style for each cell in the table
         foreach ($table->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
@@ -488,7 +500,11 @@ class SaleController extends Controller
         $sale=Sale::findOrFail($request->id);
         $grand_total=$sale->sub_total+$request->logistic_charge+$request->handling_charge-($request->discount);
 
+        $currentBalance=$grand_total-$request->paid;
+
+        $sale->current_balance=$currentBalance;
         $sale->grand_total=$grand_total;
+        $sale->paid=$request->paid;
         $sale->logistic_charge=$request->logistic_charge;
         $sale->handling_charge=$request->handling_charge;
         $sale->discount=$request->discount;
@@ -499,16 +515,16 @@ class SaleController extends Controller
             $theSettlement=Settlement::where('customer_id',$sale->customer_id)->first();
             
             $sales=Sale::where('customer_id',$sale->customer_id)->get();
-            $gt=0;
+            $gt=0;//grand total
             foreach($sales as $sale)
             {
-                $gt=$gt+$sale->grand_total;
+                $gt=$gt+$sale->current_balance;
             }
             $theSettlement->grand_total=$gt;
             $theSettlement->save();
         }else{
             Settlement::create([
-                'grand_total' => $sale->grand_total,
+                'grand_total' => $sale->current_balance,
                 'customer_id' => $sale->customer_id,
             ]);
         }

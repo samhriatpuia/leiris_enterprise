@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('scheme')->nullable();
             $table->bigInteger('sub_total')->nullable();
             $table->bigInteger('grand_total')->nullable();
+            $table->bigInteger('paid')->default(0);
+            $table->bigInteger('current_balance')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->string('customer_name')->nullable();
             $table->timestamps();

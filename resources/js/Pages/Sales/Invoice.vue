@@ -61,6 +61,8 @@ const salesForm = ref({
     logistic_charge: props.sale.logistic_charge,
     handling_charge: props.sale.handling_charge,
     discount: props.sale.discount,
+    paid: props.sale.paid,
+    // current_balance: props.sale.current_balance,
     
 });
 
@@ -403,11 +405,24 @@ function destroy(id) {
                                             <input type="text" v-model="salesForm.handling_charge" id="handling_charge" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
                                         </div>    
                                     </div> <br>
-
                                     <div class="float-right" style="margin-right:315px">
                                         <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
                                             <label for="discount" class="mt-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount</label>
                                             <input type="text" v-model="salesForm.discount" id="discount" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                        </div>    
+                                    </div> <br>
+
+                                    <div class="float-right" style="margin-right:315px">
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
+                                            <label for="paid" class="mt-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paid</label>
+                                            <input type="text" v-model="salesForm.paid" id="paid" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                        </div>    
+                                    </div> <br>
+                                                                     
+
+                                    <div class="float-right" style="margin-right:315px">
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
+                                            <div >Current Balance: {{ sale.current_balance }}</div>
                                             <br>
                                             <div >Grand Total: {{ sale.grand_total }}</div>
                                             <br>
