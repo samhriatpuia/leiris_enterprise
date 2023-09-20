@@ -101,7 +101,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/purchases/update/{id}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::delete('/purchases/delete/{id}',[PurchaseController::class,'destroy'])->name('purchases.destroy');
     Route::delete('/purchaseDetails/delete/{id}',[PurchaseController::class,'destroyPurchaseDetails'])->name('purchaseDetails.destroy');
-
+    Route::post('/pruchase/invoice/calculate',[PurchaseController::class, 'purchaseCalculate'])->name('purchases.calculate');
+    
 
     Route::get('/settlements', [SettlementController::class, 'index'])->name('settlements.index');
     Route::get('/settlements/details/{id}', [SettlementController::class, 'settlementDetailsIndex'])->name('settlements.details.index');
