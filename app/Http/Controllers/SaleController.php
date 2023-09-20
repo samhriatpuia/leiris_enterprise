@@ -84,6 +84,8 @@ class SaleController extends Controller
             Customer::create([
                 'name' => $request->new_name,
                 'phone'=>$request->phone,
+                'address'=>$request->address,
+                'gst'=>$request->gst,
             ]);
             $customer=Customer::where('name',$request->new_name)->latest()->first();
 
