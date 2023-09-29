@@ -14,19 +14,11 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('group')->nullable();
             $table->string('gst')->nullable();
-            $table->string('HSN')->nullable();
-            $table->string('stock_opening')->nullable();
-            $table->string('purchase_price')->nullable();
-            $table->string('selling_price')->nullable();
-            $table->string('batch_no')->nullable();
-            $table->date('manufacture_date')->nullable();
-            $table->date('expiry_date')->nullable();
-            $table->string('units_main')->nullable();
-            $table->string('units_secondary')->nullable();
-            $table->string('units_relation')->nullable();
-            $table->string('secondary_unit_price')->nullable();
+            $table->string('main_stock')->nullable();
+            $table->string('secondary_stock')->nullable();
+            $table->string('main_selling_price')->nullable();
+            $table->string('secondary_selling_price')->nullable();
             $table->timestamps();
         });
     }

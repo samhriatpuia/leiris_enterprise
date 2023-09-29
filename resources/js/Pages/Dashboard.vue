@@ -18,7 +18,7 @@ defineProps({
                     <div class="p-6 text-gray-900">
                         <div class="pt-5">
                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                <table class="w-full text-sm text-left text-red-500 dark:text-red-400">
+                                <!-- <table class="w-full text-sm text-left text-red-500 dark:text-red-400">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="px-6 py-3">
@@ -26,16 +26,16 @@ defineProps({
 
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                <!-- Opening Stock -->
+                                               
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                <!-- Price -->
+                                               
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                <!-- Date -->
+                                               
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                <!-- Units -->
+                                                
                                             </th>
                                             
                                         </tr>
@@ -68,9 +68,9 @@ defineProps({
                                             
                                         </tr>
                                     </tbody>
-                                </table>
-                                <div class="m-2 p-2">
-                                    <!-- <Link v-for="item in items.links" :key="item.id" :href="item.url">{{ item.label }}</Link> -->
+                                </table> -->
+                                <!-- <div class="m-2 p-2">
+                                  
                                     <div class="flex">
                                         <template v-for="item in items.links" :key="items.id" :href="item.url">
                                             <div v-if="item.url == null" v-html="item.label"
@@ -81,8 +81,8 @@ defineProps({
                                             ></Link>
                                         </template>
                                     </div>
-                                     <!-- <Pagination :links="items.links" /> -->
-                                </div>
+                                   
+                                </div> -->
                             </div>
 
                         </div>

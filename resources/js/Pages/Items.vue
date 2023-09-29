@@ -76,17 +76,12 @@ function destroy(id) {
 
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                Opening Stock
+                                                Stock
                                             </th>
                                             <th scope="col" class="px-6 py-3">
-                                                Price
+                                                Selling Price
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Date
-                                            </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Units
-                                            </th>
+                                            
                                             <th scope="col" class="px-6 py-3">
                                                 Action
                                             </th>
@@ -95,26 +90,19 @@ function destroy(id) {
                                     <tbody>
                                         <tr v-for="item in items.data" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Name: {{ item.name }}
-                                                <br><small>Group: {{ item.group }}</small>
+                                                Name: {{ item.name }} <br>
+                                                GST: {{ item.gst }}
+                                                
                                             </th>
                                             <td class="px-6 py-4">
-                                                {{ item.stock_opening }}
+                                                Main: {{ item.main_stock }}
+                                                <br>Secondary: {{ item.secondary_stock }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                Purchase: {{ item.purchase_price }}
-                                                <br>Selling: {{ item.selling_price }}
+                                                Main: Rs.{{ item.main_selling_price }}
+                                                <br>Secondary: Rs.{{ item.secondary_selling_price }}
                                             </td>
-                                            <td class="px-6 py-4">
-                                                MFG: {{ item.manufacture_date }}
-                                                <br>Expiry: {{ item.expiry_date }}
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                Main: {{ item.units_main }}
-                                                <br>Secondary: {{ item.units_secondary }}
-                                                <br>Relation: {{ item.units_relation }}
-                                            </td>
+                                            
 
 
                                             <td class="px-6 py-4">
@@ -124,6 +112,9 @@ function destroy(id) {
                                                     </div>
                                                     <div>
                                                         <button @click="destroy(item.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
+                                                    </div>
+                                                    <div>
+                                                         <Link :href="route('items.batch',item.id)" class="font-medium text-green-600 dark:text-green-500 hover:underline" >Details</Link>
                                                     </div>
                                                 </div>
                                             </td>

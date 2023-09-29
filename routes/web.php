@@ -122,6 +122,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
     Route::put('/items/update', [ItemController::class, 'update'])->name('items.update');
 
+    // added
+    Route::get('/items/batch/{id}', [ItemController::class, 'bacthes'])->name('items.batch');
+    Route::post('/items/batch', [ItemController::class, 'bacthStore'])->name('batches.store');
+    Route::delete('/bacthes/delete/{id}', [ItemController::class, 'batchdestroy'])->name('batches.destroy');
+
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::post('/groups/store',[GroupController::class, 'store'])->name('groups.store');

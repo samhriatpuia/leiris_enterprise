@@ -63,12 +63,12 @@ const submit = () => {
                                         <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Item Name</label>
 
                                     </div>
-                                    <div class="relative z-0 w-full mb-6 group">
+                                    <!-- <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.HSN" name="HSN" id="HSN" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.HSN">{{ errors.HSN }}</div>
                                         <label for="HSN" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">HSN</label>
 
-                                    </div>
+                                    </div> -->
 
                                     
                                 </div>
@@ -87,18 +87,18 @@ const submit = () => {
                                         </select>
                                         <div v-if="errors.gst">{{ errors.gst }}</div>
                                     </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <!-- Choose Group -->
+                                    <!-- <div class="relative z-0 w-full mb-6 group">
+                                       
                                         <select id="group" v-model="form.group" name="group" for='group' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="choose">
                                             <option value="" disabled selected hidden> Choose Group</option>
                                             <option v-for="(name, id) in groups" :key="id" :value="name">{{ name }}</option>
                                         </select>
                                         <div v-if="errors.group">{{ errors.group }}</div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
-                                <div class="grid md:grid-cols-2 md:gap-6">
+                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.stock_opening" name="stock_opening" id="stock_opening" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.stock_opening">{{ errors.stock_opening }}</div>
@@ -121,10 +121,10 @@ const submit = () => {
                                         <div v-if="errors.batch_no">{{ errors.batch_no }}</div>
                                         <label for="batch_no" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Batch Number</label>
                                     </div>
-                                </div>
+                                </div> -->
 
 
-                                <div class="grid md:grid-cols-2 md:gap-6">
+                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="date" v-model="form.manufacture_date" name="manufacture_date" id="manufacture_date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.manufacture_date">{{ errors.manufacture_date }}</div>
@@ -135,13 +135,13 @@ const submit = () => {
                                         <div v-if="errors.expiry_date">{{ errors.expiry_date }}</div>
                                         <label for="expiry_date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Expiry Date</label>
                                     </div>
-                                </div>
+                                </div> -->
 
 
-                                <div class="grid md:grid-cols-3 md:gap-6">
+                                <!-- <div class="grid md:grid-cols-3 md:gap-6">
                                     
                                     <div class="relative z-0 w-full mb-6 group">
-                                        <!-- <label for="">Choose Units(main)</label> -->
+                                        
                                         <select id="units_main" v-model="form.units_main" name="units_main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Units(main)">
                                             <option value="" disabled selected hidden>Choose Units(main)</option>
                                             <option value="BAG">Bag</option>
@@ -162,10 +162,10 @@ const submit = () => {
                                         <div v-if="errors.units_relation">{{ errors.units_relation }}</div>
                                         <label for="units_relation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Relation</label>
                                     </div>
-                                </div>
+                                </div> -->
 
 
-                                <div class="grid md:grid-cols-3 md:gap-6">
+                                <!-- <div class="grid md:grid-cols-3 md:gap-6">
                                     
                                     <div class="relative z-0 w-full mb-6 group">
                                        
@@ -179,7 +179,7 @@ const submit = () => {
                                     <div class="relative z-0 w-full mb-6 group">
                                         
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                             </form>

@@ -13,12 +13,13 @@ class CustomerController extends Controller
     public function dashboard()
     {
         
-        $expiryDate = now()->addDays(30);
+        // $expiryDate = now()->addDays(30);
 
-        $items = Item::where('expiry_date', '<=', $expiryDate)
-                     ->paginate(5);
+        // $items = Item::where('expiry_date', '<=', $expiryDate)
+        //              ->paginate(5);
 
-        return Inertia::render('Dashboard',compact('items'));
+        // return Inertia::render('Dashboard',compact('items'));
+        return Inertia::render('Dashboard');
     }
     /**
      * Display a listing of the resource.

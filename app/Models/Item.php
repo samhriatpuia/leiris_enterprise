@@ -11,18 +11,17 @@ class Item extends Model
 
     protected $fillable = [
         'name',
-        'group',
         'gst',
-        'HSN',
-        'stock_opening',
-        'purchase_price',
-        'selling_price',
-        'batch_no',
-        'manufacture_date',
-        'expiry_date',
-        'units_main',
-        'units_secondary',
-        'units_relation',
-        'secondary_unit_price',
+        'main_stock',
+        'secondary_stock',
+        'main_selling_price',
+        'secondary_selling_price',
+
     ];
+
+
+    public function batches()
+    {
+        return $this->hasMany(Batch::class);
+    }
 }

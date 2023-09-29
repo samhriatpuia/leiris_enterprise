@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Group;
+use App\Models\Batch;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -39,41 +40,57 @@ class ItemController extends Controller
         // dd($request->name);
         $request->validate([
             'name' => 'required',
-            'group' => 'required',
             'gst' => 'required',
+            // 'main_selling_price'=> 'required',
+            // 'secondary_selling_price'=> 'required',
 
-            'HSN' => 'required',
-            'stock_opening' => 'required',
-            'purchase_price' => 'required',
-            'selling_price' => 'required',
-            'batch_no' => 'required',
-            'manufacture_date' => 'required',
-            'expiry_date' => 'required',
-            'units_main' => 'required',
-            'units_secondary' => 'required',
-            'units_relation' => 'required',
+            'mrp'=> 'required',
+            'batch_no'=> 'required',
+            'HSN'=> 'required',
+            'manufacture_date'=> 'required',
+            'expiry_date'=> 'required',
+            'units_main'=> 'required',
+            'main_selling_price'=>'required',
+            'main_stock'=>'required',
+            'units_secondary'=> 'required',
+            'units_relation'=> 'required',
             'secondary_unit_price'=> 'required',
+            'purchase_price'=> 'required',
 
+            
         ]);
         // dd($request->name);
         Item::create([
             'name' => $request->name,
-            'group' => $request->group,
             'gst' => $request->gst,
-
-            'HSN' => $request->HSN,
-            'stock_opening' => $request->stock_opening,
-            'purchase_price' => $request->purchase_price,
-            'selling_price' => $request->selling_price,
-            'batch_no' => $request->batch_no,
-            'manufacture_date' => $request->manufacture_date,
-            'expiry_date' => $request->expiry_date,
-            'units_main' => $request->units_main,
-            'units_secondary' => $request->units_secondary,
-            'units_relation' => $request->units_relation,
-            'secondary_unit_price'=> $request->secondary_unit_price,
+            'main_selling_price'=> $request->main_selling_price,
+            'secondary_selling_price'=> $request->secondary_unit_price,
         ]);
-        sleep(1);
+
+        $item=Item::where('name',$request->name)->first();
+
+        $batch=new Batch;
+        $batch->mrp=$request->mrp;
+        $batch->batch_no=$request->batch_no;
+        $batch->HSN=$request->HSN;
+        $batch->manufacture_date=$request->manufacture_date;
+        $batch->expiry_date=$request->expiry_date;
+        $batch->units_main=$request->units_main;
+        $batch->main_stock=$request->main_stock;
+        $batch->main_selling_price=$request->main_selling_price;
+        $batch->units_secondary=$request->units_secondary;
+        $batch->units_relation=$request->units_relation;
+        $batch->secondary_unit_price=$request->secondary_unit_price;
+        $batch->purchase_price=$request->purchase_price;
+
+        $batch->secondary_stock=$request->main_stock*$request->units_relation;
+
+        $item->batches()->save($batch);
+
+        $item->main_stock=$request->main_stock;
+        $item->secondary_stock=$request->main_stock*$request->units_relation;
+        $item->save();
+        // sleep(1);
 
         return redirect()->route('items.index')->with('message', 'Item Created Successfully');
     }
@@ -107,36 +124,36 @@ class ItemController extends Controller
         $item=Item::findOrFail($request->id);
         $request->validate([
             'name' => 'required',
-            'group' => 'required',
+            
             'gst' => 'required',
-            'HSN' => 'required',
-            'stock_opening' => 'required',
-            'purchase_price' => 'required',
-            'selling_price' => 'required',
-            'batch_no' => 'required',
-            'manufacture_date' => 'required',
-            'expiry_date' => 'required',
-            'units_main' => 'required',
-            'units_secondary' => 'required',
-            'units_relation' => 'required',
-            'secondary_unit_price'=>'required',
+            // 'HSN' => 'required',
+            // 'stock_opening' => 'required',
+            // 'purchase_price' => 'required',
+            // 'selling_price' => 'required',
+            // 'batch_no' => 'required',
+            // 'manufacture_date' => 'required',
+            // 'expiry_date' => 'required',
+            // 'units_main' => 'required',
+            // 'units_secondary' => 'required',
+            // 'units_relation' => 'required',
+            // 'secondary_unit_price'=>'required',
         ]);
 
        
         $item->name = $request->name;
-        $item->group = $request->group;
+   
         $item->gst = $request->gst;
-        $item->HSN = $request->HSN;
-        $item->stock_opening = $request->stock_opening;
-        $item->purchase_price = $request->purchase_price;
-        $item->selling_price = $request->selling_price;
-        $item->batch_no = $request->batch_no;
-        $item->manufacture_date = $request->manufacture_date;
-        $item->expiry_date = $request->expiry_date;
-        $item->units_main = $request->units_main;
-        $item->units_secondary = $request->units_secondary;
-        $item->units_relation = $request->units_relation;
-        $item->secondary_unit_price=$request->secondary_unit_price;
+        // $item->HSN = $request->HSN;
+        // $item->stock_opening = $request->stock_opening;
+        // $item->purchase_price = $request->purchase_price;
+        // $item->selling_price = $request->selling_price;
+        // $item->batch_no = $request->batch_no;
+        // $item->manufacture_date = $request->manufacture_date;
+        // $item->expiry_date = $request->expiry_date;
+        // $item->units_main = $request->units_main;
+        // $item->units_secondary = $request->units_secondary;
+        // $item->units_relation = $request->units_relation;
+        // $item->secondary_unit_price=$request->secondary_unit_price;
        
         $item->save();
         
@@ -163,5 +180,95 @@ class ItemController extends Controller
 
         return Inertia::render('Items',['items' => $items]);
         
+    }
+
+    public function bacthes($id)
+    {
+        $item=Item::findOrFail($id);
+        // dd($item->name);
+        $batches = $batches = $item->batches()
+        ->latest() // Order by the created_at column in descending order (latest first)
+        ->paginate(10); 
+
+        return Inertia::render('Batch/Index',compact('item','batches'));
+    }
+
+
+    public function bacthStore(Request $request)
+    {
+         // dd($request->name);
+         $request->validate([
+            
+            'mrp'=> 'required',
+            'batch_no'=> 'required',
+            'HSN'=> 'required',
+            'manufacture_date'=> 'required',
+            'expiry_date'=> 'required',
+            'units_main'=> 'required',
+            'main_selling_price'=>'required',
+            'main_stock'=>'required',
+            'units_secondary'=> 'required',
+            'units_relation'=> 'required',
+            'secondary_unit_price'=> 'required',
+            'purchase_price'=> 'required',
+            
+            
+        ]);
+        
+
+        $item=Item::findOrFail($request->item_id);
+
+        $batch=new Batch;
+        $batch->mrp=$request->mrp;
+        $batch->batch_no=$request->batch_no;
+        $batch->HSN=$request->HSN;
+        $batch->manufacture_date=$request->manufacture_date;
+        $batch->expiry_date=$request->expiry_date;
+        $batch->units_main=$request->units_main;
+        $batch->main_stock=$request->main_stock;
+        $batch->main_selling_price=$request->main_selling_price;
+        $batch->units_secondary=$request->units_secondary;
+        $batch->units_relation=$request->units_relation;
+        $batch->secondary_unit_price=$request->secondary_unit_price;
+        $batch->purchase_price=$request->purchase_price;
+
+        $batch->secondary_stock=$request->main_stock*$request->units_relation;
+
+        $item->batches()->save($batch);
+
+        $item->main_stock=$item->main_stock+$request->main_stock;
+        $item->secondary_stock=$item->secondary_stock+$request->main_stock*$request->units_relation;
+        $item->save();
+        // sleep(1);
+
+        
+        $batches = $item->batches()
+        ->latest() // Order by the created_at column in descending order (latest first)
+        ->paginate(10); 
+
+        return Inertia::render('Batch/Index',compact('item','batches'));
+    }
+
+
+    public function batchdestroy($id)
+    {
+        $batch=Batch::findOrFail($id);
+        $item=Item::where('id',$batch->item_id)->first();
+        // dd($item->id);
+        
+
+        $batch=Batch::findOrFail($id);
+
+        $item->main_stock=$item->main_stock-$batch->main_stock;
+        $item->secondary_stock=$item->secondary_stock-$batch->main_stock*$batch->units_relation;
+        $item->save();
+
+        $batch->delete();
+        
+        $batches = $item->batches()
+        ->latest() // Order by the created_at column in descending order (latest first)
+        ->paginate(10); 
+
+        return Inertia::render('Batch/Index',compact('item','batches'));
     }
 }
