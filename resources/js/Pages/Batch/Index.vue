@@ -12,7 +12,7 @@ import { usePage } from '@inertiajs/vue3';
 
 
 const props = defineProps({
-    
+
     item: {
         item: Object,
     },
@@ -28,7 +28,7 @@ const props = defineProps({
 
 
 const form = useForm({
-    
+
     main_selling_price: '',
     secondary_selling_price: '',
     mrp: '',
@@ -51,14 +51,14 @@ const form = useForm({
 const submit = () => {
     form.post(route("batches.store"),{
         preserveScroll: true,
-        onSuccess: () => form.reset(), // reset form if everything went OK
+        onSuccess: () => form.reset(),
     });
 };
 
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {
         form.delete(route('batches.destroy', id));
-        
+
     }
 }
 </script>
@@ -72,7 +72,7 @@ function destroy(id) {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                           
+
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-2">
@@ -96,16 +96,16 @@ function destroy(id) {
                             <div>
                                 <b>Secondary Unit Price:</b> {{ item.secondary_selling_price }}
                             </div>
-                            
+
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 mb-8">
                             <div>
-                                <span id="displayedDataLabel" v-if="displayedData">{{ displayedData }}</span>
+                                <!-- <span id="displayedDataLabel" v-if="displayedData">{{ displayedData }}</span> -->
                             </div>
                         </div>
 
-                    
+
 
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -127,7 +127,7 @@ function destroy(id) {
                                                 Secondary
                                             </th>
 
-                                            
+
                                             <th scope="col" class="px-6 py-3">
                                                 Action
                                             </th>
@@ -136,48 +136,48 @@ function destroy(id) {
                                     <tbody>
                                         <tr v-for="batch in batches.data" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                HSN: {{ batch.HSN }} 
+                                                HSN: {{ batch.HSN }}
                                                 <br>
-                                                Batch: {{ batch.batch }}    
-                                                MRP: {{ batch.mrp }}                                        
+                                                Batch: {{ batch.batch }}
+                                                MRP: {{ batch.mrp }}
                                             </th>
                                             <td class="px-6 py-4">
-                                                MFG date: {{ batch.manufature_date }}
+                                                MFG date: {{ batch.manufacture_date }}
                                                 <br>
-                                                EXP Date:   {{ batch.expirey_date }}
+                                                EXP Date:   {{ batch.expiry_date }}
                                             </td>
-                                            
+
                                             <td class="px-6 py-4">
                                                 Unit: {{ batch.units_main }}
                                                 <br>
-                                                Stock: {{ batch.main_stock }}    
+                                                Stock: {{ batch.main_stock }}
                                                 <br>
-                                                Price: {{ batch.main_selling_price }}    
+                                                Price: {{ batch.main_selling_price }}
                                                 <br>
-                                                Relation: {{ batch.units_relation }}                                       
+                                                Relation: {{ batch.units_relation }}
                                             </td>
 
                                             <td class="px-6 py-4">
                                                 Unit: {{ batch.units_secondary }}
                                                 <br>
-                                                Stock: {{ batch.secondary_stock }}    
+                                                Stock: {{ batch.secondary_stock }}
                                                 <br>
-                                                Price: {{ batch.secondary_unit_price }}                                                  
+                                                Price: {{ batch.secondary_unit_price }}
                                             </td>
 
-                                           
+
 
                                             <td class="px-6 py-4">
-                                               
+
                                                 <button @click="destroy(batch.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
-                                               
+
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                
+
                                 <div class="m-2 p-2">
-                                  
+
                                     <div class="flex">
                                         <template v-for="batch in batches.links" :key="batches.id" :href="batch.url">
                                             <div v-if="batch.url == null" v-html="batch.label"
@@ -188,13 +188,13 @@ function destroy(id) {
                                             ></Link>
                                         </template>
                                     </div>
-                                    
+
                                 </div>
 
                                 <form @submit.prevent="submit" class="p-7 border p-4">
 
                                    <div class="grid md:grid-cols-2 md:gap-6">
-                                        
+
                                         <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.mrp" name="mrp" id="mrp" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                             <!-- <div v-if="errors.mrp">{{ errors.mrp }}</div> -->
@@ -208,11 +208,11 @@ function destroy(id) {
                                                 <label for="purchase_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Purchase Price</label>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
 
                                     <div class="grid md:grid-cols-2 md:gap-6">
-                                    
+
                                         <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.batch_no" name="batch_no" id="batch_no" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                             <!-- <div v-if="errors.batch_no">{{ errors.batch_no }}</div> -->
@@ -226,7 +226,7 @@ function destroy(id) {
 
                                         </div>
 
-                                        
+
                                     </div>
                                     <br>
 
@@ -272,12 +272,12 @@ function destroy(id) {
                                             </div>
                                         </div>
 
-                                        
-                                        
+
+
                                     </div>
 
                                     <div class="grid md:grid-cols-3 md:gap-6">
-                                        
+
                                         <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.units_relation" name="units_relation" id="units_relation" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                             <!-- <div v-if="errors.units_relation">{{ errors.units_relation }}</div> -->
@@ -298,7 +298,7 @@ function destroy(id) {
                                             <label for="secondary_unit_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Secondary Unit Price</label>
 
                                         </div>
-                                    
+
                                     </div>
                                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                 </form>

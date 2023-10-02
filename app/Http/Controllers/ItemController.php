@@ -19,7 +19,7 @@ class ItemController extends Controller
         $items = Item::orderBy('created_at', 'desc')
                         ->paginate(10);
 
-       
+
         return Inertia::render('Items',compact('items'));
     }
 
@@ -57,7 +57,7 @@ class ItemController extends Controller
             'secondary_unit_price'=> 'required',
             'purchase_price'=> 'required',
 
-            
+
         ]);
         // dd($request->name);
         Item::create([
@@ -86,6 +86,10 @@ class ItemController extends Controller
         $batch->secondary_stock=$request->main_stock*$request->units_relation;
 
         $item->batches()->save($batch);
+
+        $item->units_main=$request->units_main;
+        $item->units_secondary=$request->units_secondary;
+        $item->units_relation=$request->units_relation;
 
         $item->main_stock=$request->main_stock;
         $item->secondary_stock=$request->main_stock*$request->units_relation;
@@ -124,7 +128,7 @@ class ItemController extends Controller
         $item=Item::findOrFail($request->id);
         $request->validate([
             'name' => 'required',
-            
+
             'gst' => 'required',
             // 'HSN' => 'required',
             // 'stock_opening' => 'required',
@@ -139,9 +143,9 @@ class ItemController extends Controller
             // 'secondary_unit_price'=>'required',
         ]);
 
-       
+
         $item->name = $request->name;
-   
+
         $item->gst = $request->gst;
         // $item->HSN = $request->HSN;
         // $item->stock_opening = $request->stock_opening;
@@ -154,9 +158,9 @@ class ItemController extends Controller
         // $item->units_secondary = $request->units_secondary;
         // $item->units_relation = $request->units_relation;
         // $item->secondary_unit_price=$request->secondary_unit_price;
-       
+
         $item->save();
-        
+
 
         return redirect()->route('items.index');
     }
@@ -179,7 +183,7 @@ class ItemController extends Controller
         $items=Item::where('name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('Items',['items' => $items]);
-        
+
     }
 
     public function bacthes($id)
@@ -188,7 +192,7 @@ class ItemController extends Controller
         // dd($item->name);
         $batches = $batches = $item->batches()
         ->latest() // Order by the created_at column in descending order (latest first)
-        ->paginate(10); 
+        ->paginate(10);
 
         return Inertia::render('Batch/Index',compact('item','batches'));
     }
@@ -196,9 +200,9 @@ class ItemController extends Controller
 
     public function bacthStore(Request $request)
     {
-         // dd($request->name);
+        //  dd($request->units_main);
          $request->validate([
-            
+
             'mrp'=> 'required',
             'batch_no'=> 'required',
             'HSN'=> 'required',
@@ -211,10 +215,10 @@ class ItemController extends Controller
             'units_relation'=> 'required',
             'secondary_unit_price'=> 'required',
             'purchase_price'=> 'required',
-            
-            
+
+
         ]);
-        
+
 
         $item=Item::findOrFail($request->item_id);
 
@@ -234,6 +238,7 @@ class ItemController extends Controller
 
         $batch->secondary_stock=$request->main_stock*$request->units_relation;
 
+        // this saves batch
         $item->batches()->save($batch);
 
         $item->main_stock=$item->main_stock+$request->main_stock;
@@ -241,10 +246,10 @@ class ItemController extends Controller
         $item->save();
         // sleep(1);
 
-        
+
         $batches = $item->batches()
         ->latest() // Order by the created_at column in descending order (latest first)
-        ->paginate(10); 
+        ->paginate(10);
 
         return Inertia::render('Batch/Index',compact('item','batches'));
     }
@@ -255,7 +260,7 @@ class ItemController extends Controller
         $batch=Batch::findOrFail($id);
         $item=Item::where('id',$batch->item_id)->first();
         // dd($item->id);
-        
+
 
         $batch=Batch::findOrFail($id);
 
@@ -264,10 +269,10 @@ class ItemController extends Controller
         $item->save();
 
         $batch->delete();
-        
+
         $batches = $item->batches()
         ->latest() // Order by the created_at column in descending order (latest first)
-        ->paginate(10); 
+        ->paginate(10);
 
         return Inertia::render('Batch/Index',compact('item','batches'));
     }

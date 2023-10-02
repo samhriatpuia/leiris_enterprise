@@ -30,7 +30,7 @@ class SaleController extends Controller
         $sales=Sale::where('customer_name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('Sales/Index',compact('sales'));
-        
+
     }
 
     /**
@@ -54,10 +54,10 @@ class SaleController extends Controller
             'invoice_number' => 'required',
             'customer_id' => 'required_without:new_name',
             'new_name' => 'required_without:customer_id',
-            
-            
+
+
         ]);
-        
+
         if (is_null($request->new_name))
         {
             $customer=Customer::findOrFail($request->customer_id);
@@ -66,13 +66,13 @@ class SaleController extends Controller
                 'customer_id' => $request->customer_id,
                 'date' => $request->date,
                 'invoice_number' => $request->invoice_number,
-    
+
                 'customer_name' => $customer->name,
-                
+
             ]);
 
             $sale=Sale::where('customer_id',$request->customer_id)->where('invoice_number',$request->invoice_number)->first();
-            
+
             // dd($sale->invoice_number);
 
             return redirect()->route('sales.invoice.index',$sale->id)->with('message', 'Sales Created Successfully');
@@ -97,13 +97,13 @@ class SaleController extends Controller
             ]);
 
             $sale=Sale::where('customer_id',$customer->id)->latest()->first();
-            
+
 
 
             return redirect()->route('sales.invoice.index',$customer->id)->with('message', 'Sales Created Successfully');
 
         }
-   
+
     }
 
     /**
@@ -153,9 +153,9 @@ class SaleController extends Controller
         $sale->scheme = $request->scheme;
 
         $sale->customer_name = $customer->name;
-       
+
         $sale->save();
-        
+
 
         $sale2->customer_id = $request->customer_id;
         $sale2->date = $request->date;
@@ -166,7 +166,7 @@ class SaleController extends Controller
         $sale2->scheme = $request->scheme;
 
         $sale2->customer_name = $customer->name;
-       
+
         $sale2->save();
 
 
@@ -204,29 +204,37 @@ class SaleController extends Controller
             'quantity'=>'required',
             'unit'=>'required',
             // 'price'=>'required'
-            
+
         ]);
 
-        if(is_null($request->new_name)) 
+        if(is_null($request->new_name))
         {
             $item=Item::where('id',$request->particulars)->first();
             // dd($request->sales_id);
-            
+
 
             if($request->unit=='primary')
             {
-                $thePrice=$item->selling_price;
+                $thePrice=$item->main_selling_price;
                 $theUnit=$item->units_main;
-                $item->stock_opening=(int)$item->stock_opening-(int)$request->quantity;
+                $item->main_stock=(int)$item->main_stock-(int)$request->quantity;
                 $item->save();
-                // dd($thePrice);
+
             }
             else
             {
                 $thePrice=$item->secondary_unit_price;
                 $theUnit=$item->units_secondary;
+
+                $amountToDeduct = floatval($item->secondary_stock)/floatval($item->units_relation);
+
+                // Update primary_stock
+                $item->main_stock -= $amountToDeduct;
+                $item->save();
+
             }
-            // dd($thePrice);
+
+
             Detail::create([
                 'particulars' => $item->name,
                 'quantity' => $request->quantity,
@@ -248,9 +256,9 @@ class SaleController extends Controller
                 $sale->sub_total=$sale->sub_total+$detail->amount;
             }
 
-        
+
             $sale->save();
-        
+
             $customer=Customer::where('id',$sale->customer_id)->first();
 
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
@@ -308,22 +316,22 @@ class SaleController extends Controller
                 $sale->sub_total=$sale->sub_total+$detail->amount;
             }
 
-        
+
             $sale->save();
-        
+
             $customer=Customer::where('id',$sale->customer_id)->first();
 
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
             $items=Item::pluck('name','id');
             return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
         }
-        
+
     }
 
 // Generate word
     public function invoice_generate($id)
     {
-        
+
         $sale=Sale::findOrFail($id);
         $details=Detail::where('sales_id',$sale->id)->get();
         // $dept=Department::where('id',$deposit->department_id)->first();
@@ -348,12 +356,12 @@ class SaleController extends Controller
 
         $section = $phpWord->addSection();
         $phpWord->setDefaultFontSize(13);
-        
-        
+
+
         $text1 = 'Leiris Enterprise';
         $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
         $section->addText($text1, null, array('alignment' => $alignment));
-        
+
         // Add text to the section with centered alignment
         $text2 = 'GST No.: AXPPL5682';
         $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
@@ -377,7 +385,7 @@ class SaleController extends Controller
         // $section->addText('Address: ' . $address);
         // $section->addText('Payment: ' . $payment);
 
-        
+
 
         $section->addTextBreak(2);
 // Create a table for the sales list
@@ -390,7 +398,7 @@ class SaleController extends Controller
         $table->addCell(1000)->addText('Amount');
 
         // Set border style for each cell in the table
-        
+
 
         // Populate the table with sales data
         foreach ($details as $detail) {
@@ -403,8 +411,8 @@ class SaleController extends Controller
         }
 
         $section->addTextBreak(2); // Add 2 line breaks for more spacing
-       
-        
+
+
 
 
 
@@ -445,7 +453,7 @@ class SaleController extends Controller
                 $cellStyle->setBorderBottomColor('000000');
             }
         }
-       
+
         // $section->addText($description);
 
 
@@ -474,16 +482,16 @@ class SaleController extends Controller
            $item->stock_opening=$item->stock_opening+$detail->quantity;
            $item->save();
         }
-        
+
         $sale->sub_total=$sale->sub_total-$detail->amount;
 
-        
+
         $detail->delete();
-       
+
         $sale->save();
-        
+
         $customer=Customer::where('id',$sale->customer_id)->first();
-        
+
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
@@ -496,7 +504,7 @@ class SaleController extends Controller
             'handling_charge' => 'required',
             'id' => 'required_without:new_name',
             'discount' => 'required_without:customer_id',
-            
+
         ]);
 
         $sale=Sale::findOrFail($request->id);
@@ -513,9 +521,9 @@ class SaleController extends Controller
         $sale->save();
 
         if (Settlement::where('customer_id', $sale->customer_id)->exists()) {
-           
+
             $theSettlement=Settlement::where('customer_id',$sale->customer_id)->first();
-            
+
             $sales=Sale::where('customer_id',$sale->customer_id)->get();
             $gt=0;//grand total
             foreach($sales as $sale)
@@ -534,7 +542,7 @@ class SaleController extends Controller
 
 
         $customer=Customer::where('id',$sale->customer_id)->first();
-        
+
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));

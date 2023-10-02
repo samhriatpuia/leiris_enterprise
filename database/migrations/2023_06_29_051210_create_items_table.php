@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('gst')->nullable();
+            $table->string('units_main')->nullable();
+            $table->string('units_secondary')->nullable();
+            $table->string('units_relation')->nullable();
             $table->string('main_stock')->nullable();
             $table->string('secondary_stock')->nullable();
             $table->string('main_selling_price')->nullable();

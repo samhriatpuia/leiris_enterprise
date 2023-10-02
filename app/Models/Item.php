@@ -16,7 +16,9 @@ class Item extends Model
         'secondary_stock',
         'main_selling_price',
         'secondary_selling_price',
-
+        'units_main',
+        'units_secondary',
+        'units_relation',
     ];
 
 
