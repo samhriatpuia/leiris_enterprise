@@ -12,6 +12,7 @@ use App\Models\Detail;
 use App\Models\Settlement;
 use App\Models\Detail2;
 use App\Models\Item;
+use App\Models\Batch;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -287,6 +288,18 @@ class SaleController extends Controller
             $newitem->save();
 
             $theitem=Item::where('name',$request->new_name)->first();
+            // Create new batch
+            $newBatch=new Batch();
+            $newBatch->item_id=$theitem->id;
+            $newBatch->units_main=$request->units_main;
+            $newBatch->main_stock=$request->stock_opening;
+            $newBatch->main_selling_price=$request->selling_price;
+            $newBatch->units_secondary=$request->units_secondary;
+            $newBatch->units_relation=$request->units_relation;
+            $newBatch->secondary_stock=(int)$request->stock_opening*(int)$request->units_relation;
+            $newBatch->secondary_unit_price=$request->secondary_unit_price;
+
+            $newBatch->save();
             // dd($item->name);
             if($request->unit=='primary')
             {
