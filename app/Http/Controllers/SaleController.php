@@ -217,19 +217,26 @@ class SaleController extends Controller
             {
                 $thePrice=$item->main_selling_price;
                 $theUnit=$item->units_main;
-                $item->main_stock=(int)$item->main_stock-(int)$request->quantity;
+                $mainStock=(int)$item->main_stock-(int)$request->quantity;
+                $item->main_stock=$mainStock;
+
+                $item->secondary_stock=$mainStock*(int)$item->units_relation;
                 $item->save();
 
             }
             else
             {
-                $thePrice=$item->secondary_unit_price;
+                $thePrice=$item->secondary_selling_price;
                 $theUnit=$item->units_secondary;
 
-                $amountToDeduct = floatval($item->secondary_stock)/floatval($item->units_relation);
+                $newValueOfSecondaryStock=(int)$item->secondary_stock-(int)$request->quantity;
 
-                // Update primary_stock
-                $item->main_stock -= $amountToDeduct;
+
+                $newValueOfPrimaryStock=(float)($newValueOfSecondaryStock)/(float)($item->units_relation);
+
+                $item->main_stock=$newValueOfPrimaryStock;
+                $item->secondary_stock=$newValueOfSecondaryStock;
+
                 $item->save();
 
             }
@@ -269,29 +276,47 @@ class SaleController extends Controller
         {
             $newitem=new Item();
             $newitem->name=$request->new_name;
-            $newitem->batch_no=$request->batch;
-            $newitem->stock_opening =$request->stock_opening ;
-            $newitem->selling_price =$request->selling_price ;
+            // $newitem->batch_no=$request->batch;
+            $newitem->main_stock =$request->stock_opening ;
+            $newitem->main_selling_price =$request->selling_price ;
             $newitem->units_secondary =$request->units_secondary ;
             $newitem->units_main =$request->units_main ;
             $newitem->units_relation =$request->units_relation ;
-            $newitem->secondary_unit_price =$request->secondary_unit_price ;
+            $newitem->secondary_selling_price =$request->secondary_unit_price ;
+            $newitem->secondary_stock=(int)$request->stock_opening*(int)$request->units_relation;
             $newitem->save();
 
             $theitem=Item::where('name',$request->new_name)->first();
             // dd($item->name);
             if($request->unit=='primary')
             {
-                $thePrice=$theitem->selling_price;
+                $thePrice=$theitem->main_selling_price;
                 $theUnit=$theitem->units_main;
-                $theitem->stock_opening=(int)$theitem->stock_opening-(int)$request->quantity;
+                // $theitem->stock_opening=(int)$theitem->stock_opening-(int)$request->quantity;
+                // $theitem->main_stock=((int)$theitem->main_stock)-((int)$request->quantity);
+
+                $mainStock=(int)$theitem->main_stock-(int)$request->quantity;
+                $theitem->main_stock=$mainStock;
+
+                $theitem->secondary_stock=$mainStock*(int)$theitem->units_relation;
+
                 $theitem->save();
                 // dd($theUnit);
             }
             else
             {
-                $thePrice=$item->secondary_unit_price;
-                $theUnit=$item->units_secondary;
+                // $thePrice=$item->secondary_unit_price;
+                // $theUnit=$item->units_secondary;
+
+                $thePrice=$theitem->secondary_selling_price;
+                $theUnit=$theitem->units_secondary;
+
+                $newValueOfSecondaryStock=(int)($theitem->secondary_stock)-((int)$request->quantity);
+
+                $newValueOfPrimaryStock=(float)$newValueOfSecondaryStock/((float)$theitem->units_relation);
+
+                $theitem->save();
+
             }
 
             // dd($request->sales_id);
@@ -479,8 +504,18 @@ class SaleController extends Controller
         $sale=Sale::where('id',$detail->sales_id)->first();
         if($detail->unit == "BAG" || $detail->unit == "CASE"|| $detail->unit == "PIECE"|| $detail->unit == "TIN"|| $detail->unit == "PACKET")
         {
-           $item->stock_opening=$item->stock_opening+$detail->quantity;
-           $item->save();
+            $valueOfMainStock=(int)$item->main_stock+$detail->quantity;
+            $item->main_stock=$valueOfMainStock;
+            $valueOfSecondaryStock=$valueOfMainStock*(int)$item->units_relation;
+            $item->secondary_stock=$valueOfSecondaryStock;
+            $item->save();
+        }
+        else
+        {
+            $cal=(int)$item->secondary_stock+(int)$detail->quantity;
+            $item->secondary_stock=$cal;
+            $item->main_stock=(float)$cal/(float)$item->units_relation;
+            $item->save();
         }
 
         $sale->sub_total=$sale->sub_total-$detail->amount;
