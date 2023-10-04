@@ -284,9 +284,11 @@ class SaleController extends Controller
 
             $customer=Customer::where('id',$sale->customer_id)->first();
 
+            $batches=Batch::pluck('batch_no','id');
+
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
             $items=Item::pluck('name','id');
-            return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
+            return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
         }
         else
         {
