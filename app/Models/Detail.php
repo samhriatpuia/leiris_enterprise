@@ -18,7 +18,7 @@ class Detail extends Model
         'price',
         'amount',
         'sales_id',
-        
+        'batch',
     ];
 
     public function sale()

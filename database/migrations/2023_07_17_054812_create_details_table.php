@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('price');
             $table->bigInteger('amount');
             $table->unsignedBigInteger('sales_id');
+            $table->string('batch')->nullable();
             $table->foreign('sales_id')->references('id')->on('sales')->onDelete('cascade');
             $table->timestamps();
         });

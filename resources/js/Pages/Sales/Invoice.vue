@@ -23,6 +23,9 @@ const props = defineProps({
     },
     items: {
         items: Object
+    },
+    batches: {
+        batches: Object
     }
 });
 const form = useForm({
@@ -32,6 +35,7 @@ const form = useForm({
     discount: '',
     price: '',
     sales_id: props.sale.id,
+    batch_no: '',
 
 });
 
@@ -84,7 +88,7 @@ const invoiceForm = ref({
     discount: '',
     price: '',
     sales_id: props.sale.id,
-
+    batch_no: '',
 });
 
 const submitInvoiceForm = async () => {
@@ -165,14 +169,14 @@ function destroy(id) {
                                         <input type="hidden " v-model="invoiceForm.sales_id" name="sales_id" disabled>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-4 md:grid-cols-4 gap-4">
+                                <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block text-sm font-medium text-gray-900 dark:text-white">Select Item</label>
                                             <select id="particulars" v-model="invoiceForm.particulars" name="particulars" for='particulars' class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
                                                 <option value="" disabled selected hidden> Choose Item</option>
                                                 <option v-for="(name, id) in items" :key="id" :value="id">{{ name }}</option>
-                                                <!-- <option @click="openModal" class="text-green-900"><b>New Item</b></option> -->
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -180,7 +184,7 @@ function destroy(id) {
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit</label>
-                                            <!-- <input type="text" v-model="invoiceForm.unit" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required> -->
+                                           
                                             <select id="unit" v-model="invoiceForm.unit" name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Units(main)">
                                                 <option value="" disabled selected hidden>Choose Unit</option>
                                                 <option value="primary">Primary(Bag,Case,Tin,Packet)</option>
@@ -190,6 +194,16 @@ function destroy(id) {
                                         </div>
                                     </div>
 
+                                    <div class="mt-5">
+                                        <div class="mb-6">
+                                            <label for="batch_no" class="block text-sm font-medium text-gray-900 dark:text-white">Select Batch</label>
+                                            <select id="batch_no" v-model="invoiceForm.batch_no" name="batch_no" for='batch_no' class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
+                                                <option value="" disabled selected hidden> Choose batch</option>
+                                                <option v-for="(batch_no, id) in batches" :key="id" :value="batch_no">{{ batch_no }}</option>
+                                               
+                                            </select>
+                                        </div>
+                                    </div>
                                     <!-- <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -293,6 +307,14 @@ function destroy(id) {
                                                 <input v-model="invoiceForm.units_relation" type="text" id="units_relation" name="units_relation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                                             </div>
+
+
+                                            <div class="mb-6">
+                                                <label for="batch_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batch No.</label>
+                                                <input v-model="invoiceForm.batch_no" type="text" id="batch_no" name="batch_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                            </div>
+
 
 
                                             <button @click="closeModal" class="mt-4 text-gray-500 hover:text-gray-700">Save</button>

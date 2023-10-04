@@ -24,7 +24,7 @@ class Batch extends Model
         'units_relation',
         'secondary_stock',
         'secondary_unit_price',
-        'mrp',
+        'batch',
     ];
 
     public function item()

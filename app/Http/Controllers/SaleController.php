@@ -189,17 +189,18 @@ class SaleController extends Controller
     {
         $sale=Sale::findOrFail($id);
         // dd($sale->id);
+        $batches=Batch::pluck('batch_no','id');
         $customer=Customer::where('id',$sale->customer_id)->first();
         // dd($customer->id);
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
-        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
+        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 
 
     public function invoiceStore(Request $request)
     {
-        // dd($request->new_name);
+        // dd($request->batch_no);
         $request->validate([
             // 'particulars' => 'required',
             'quantity'=>'required',
@@ -211,8 +212,8 @@ class SaleController extends Controller
         if(is_null($request->new_name))
         {
             $item=Item::where('id',$request->particulars)->first();
-            // dd($request->sales_id);
-
+           
+            $batch=Batch::where('item_id', $item->id)->where('batch_no', $request->batch_no)->first();
 
             if($request->unit=='primary')
             {
@@ -223,6 +224,12 @@ class SaleController extends Controller
 
                 $item->secondary_stock=$mainStock*(int)$item->units_relation;
                 $item->save();
+
+                $theMainStck=(int)$batch->main_stock-(int)$request->quantity;
+                
+                $batch->secondary_stock=$theMainStck*(int)$batch->units_relation;
+                $batch->main_stock=$theMainStck;
+                $batch->save();
 
             }
             else
@@ -240,6 +247,11 @@ class SaleController extends Controller
 
                 $item->save();
 
+                $theSecStk=(int)$batch->secondary_stock-(int)$request->quantity;
+                $batch->secondary_stock=$theSecStk;
+                $batch->main_stock=(float)$theSecStk/(float)($batch->units_relation);
+                $batch->save();
+
             }
 
 
@@ -251,7 +263,10 @@ class SaleController extends Controller
                 'discount'=>$request->discount,
                 'amount'=>($thePrice*$request->quantity)-($request->discount),
                 'sales_id'=>$request->sales_id,
+                'batch'=>$request->batch_no,
             ]);
+
+           
 
             $sale=Sale::where('id',$request->sales_id)->first();
             $sale2=Sale2::where('id',$request->sales_id)->first();
@@ -298,8 +313,11 @@ class SaleController extends Controller
             $newBatch->units_relation=$request->units_relation;
             $newBatch->secondary_stock=(int)$request->stock_opening*(int)$request->units_relation;
             $newBatch->secondary_unit_price=$request->secondary_unit_price;
+            $newBatch->batch_no=$request->batch_no;
 
             $newBatch->save();
+
+            $batch=Batch::where('item_id',$theitem->id)->where('batch_no', $request->batch_no)->first();
             // dd($item->name);
             if($request->unit=='primary')
             {
@@ -314,6 +332,13 @@ class SaleController extends Controller
                 $theitem->secondary_stock=$mainStock*(int)$theitem->units_relation;
 
                 $theitem->save();
+
+                $theMainStck=(int)$batch->main_stock-(int)$request->quantity;
+                
+                $batch->secondary_stock=$theMainStck*(int)$batch->units_relation;
+                $batch->main_stock=$theMainStck;
+                $batch->save();
+
                 // dd($theUnit);
             }
             else
@@ -330,6 +355,12 @@ class SaleController extends Controller
 
                 $theitem->save();
 
+
+                $theSecStk=(int)$batch->secondary_stock-(int)$request->quantity;
+                $batch->secondary_stock=$theSecStk;
+                $batch->main_stock=(float)$theSecStk/(float)($batch->units_relation);
+                $batch->save();
+
             }
 
             // dd($request->sales_id);
@@ -341,6 +372,7 @@ class SaleController extends Controller
                 'discount'=>$request->discount,
                 'amount'=>($thePrice*$request->quantity)-($request->discount),
                 'sales_id'=>$request->sales_id,
+                'batch'=>$request->batch_no,
             ]);
 
             $sale=Sale::where('id',$request->sales_id)->first();
@@ -359,9 +391,11 @@ class SaleController extends Controller
 
             $customer=Customer::where('id',$sale->customer_id)->first();
 
+            $batches=Batch::pluck('batch_no','id');
+
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
             $items=Item::pluck('name','id');
-            return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
+            return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
         }
 
     }
@@ -372,7 +406,7 @@ class SaleController extends Controller
 
         $sale=Sale::findOrFail($id);
         $details=Detail::where('sales_id',$sale->id)->get();
-        // $dept=Department::where('id',$deposit->department_id)->first();
+       
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
         $invoice_number= htmlspecialchars($sale->invoice_number);
@@ -400,16 +434,16 @@ class SaleController extends Controller
         $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
         $section->addText($text1, null, array('alignment' => $alignment));
 
-        // Add text to the section with centered alignment
+      
         $text2 = 'GST No.: AXPPL5682';
         $alignment = \PhpOffice\PhpWord\SimpleType\Jc::CENTER; // Set the alignment to center
         $section->addText($text2, null, array('alignment' => $alignment));
 
 
-        // Add empty paragraph for spacing
-        $section->addTextBreak(2); // Add 2 line breaks for more spacing
+       
+        $section->addTextBreak(2);
 
-        // Add invoice details
+      
         $table = $section->addTable();
         $table->addRow();
         $table->addCell(6000)->addText('Customer Details<w:br/>Name: '.$customer_name.'<w:br/>Phone: '.$phone.'<w:br/>Address: '.$address.'<w:br/>GST: '.$gst);
@@ -417,16 +451,11 @@ class SaleController extends Controller
         $table->addCell(6000)->addText('Invoice No: '.$invoice_number.'<w:br/>Date: '.$date);
 
 
-        // $section->addText('Invoice Number: ' . $invoice_number);
-        // $section->addText('Date: ' . $date);
-        // $section->addText('Customer: ' . $customer);
-        // $section->addText('Address: ' . $address);
-        // $section->addText('Payment: ' . $payment);
 
 
 
         $section->addTextBreak(2);
-// Create a table for the sales list
+
         $table = $section->addTable();
         $table->addRow();
         $table->addCell(2000)->addText('Particular');
@@ -435,10 +464,7 @@ class SaleController extends Controller
         $table->addCell(1000)->addText('Price');
         $table->addCell(1000)->addText('Amount');
 
-        // Set border style for each cell in the table
-
-
-        // Populate the table with sales data
+       
         foreach ($details as $detail) {
             $table->addRow();
             $table->addCell(3000)->addText($detail->particulars);
@@ -448,40 +474,40 @@ class SaleController extends Controller
             $table->addCell(2000)->addText($detail->amount);
         }
 
-        $section->addTextBreak(2); // Add 2 line breaks for more spacing
+        $section->addTextBreak(2); 
 
 
 
 
 
         $text3 = 'Sub Total: '.$sub_total;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; 
         $section->addText($text3, null, array('alignment' => $alignment));
 
         $text5 = 'Logistics: '.$logistic_charge;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; 
         $section->addText($text5, null, array('alignment' => $alignment));
 
         $text6 = 'Handling: '.$handling_charge;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; 
         $section->addText($text6, null, array('alignment' => $alignment));
 
 
         $text4 = 'Grand Total: '.$grand_total;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; 
         $section->addText($text4, null, array('alignment' => $alignment));
 
         $text7 = 'Cash Tendered: '.$Paid;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT;
         $section->addText($text7, null, array('alignment' => $alignment));
 
 
         $text8 = 'Current Balance: '.$currentBalance;
-        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; // Set the alignment to center
+        $alignment = \PhpOffice\PhpWord\SimpleType\Jc::RIGHT; 
         $section->addText($text8, null, array('alignment' => $alignment));
 
 
-        // Set border style for each cell in the table
+       
         foreach ($table->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
                 $cellStyle = $cell->getStyle();
@@ -492,13 +518,13 @@ class SaleController extends Controller
             }
         }
 
-        // $section->addText($description);
+     
 
 
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         try {
-            $objWriter->save(storage_path($date.'.doc'));
-        } catch (Exception $e) {
+                $objWriter->save(storage_path($date.'.doc'));
+            } catch (Exception $e) {
         }
 
 
@@ -513,8 +539,12 @@ class SaleController extends Controller
 
         // dd($detail->quantity);
         $item=Item::where('name',$detail->particulars)->first();
-        // dd($item->name);
+        // dd($item);
         $sale=Sale::where('id',$detail->sales_id)->first();
+        
+        $batch=Batch::where('item_id', $item->id)->where('batch_no', $detail->batch)->first();
+        // dd($batch);
+
         if($detail->unit == "BAG" || $detail->unit == "CASE"|| $detail->unit == "PIECE"|| $detail->unit == "TIN"|| $detail->unit == "PACKET")
         {
             $valueOfMainStock=(int)$item->main_stock+$detail->quantity;
@@ -522,6 +552,11 @@ class SaleController extends Controller
             $valueOfSecondaryStock=$valueOfMainStock*(int)$item->units_relation;
             $item->secondary_stock=$valueOfSecondaryStock;
             $item->save();
+
+            $mainStock=(int)$batch->main_stock+(int)$detail->quantity;
+            $batch->main_stock=$mainStock;
+            $batch->secondary_stock=$mainStock*(int)($batch->units_relation);
+            $batch->save();
         }
         else
         {
@@ -529,6 +564,12 @@ class SaleController extends Controller
             $item->secondary_stock=$cal;
             $item->main_stock=(float)$cal/(float)$item->units_relation;
             $item->save();
+
+
+            $theSecStk=(int)$batch->secondary_stock+(int)$detail->quantity;
+            $batch->secondary_stock=$theSecStk;
+            $batch->main_stock=(float)$theSecStk/(float)($batch->units_relation);
+            $batch->save();
         }
 
         $sale->sub_total=$sale->sub_total-$detail->amount;
@@ -538,11 +579,13 @@ class SaleController extends Controller
 
         $sale->save();
 
+        $batches=Batch::pluck('batch_no','id');
+
         $customer=Customer::where('id',$sale->customer_id)->first();
 
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
         $items=Item::pluck('name','id');
-        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
+        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 
     public function calculate(Request $request)
