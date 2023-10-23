@@ -66,6 +66,7 @@ const salesForm = ref({
     handling_charge: props.sale.handling_charge,
     discount: props.sale.discount,
     paid: props.sale.paid,
+   payment_mode: props.sale.payment_mode,
     // current_balance: props.sale.current_balance,
 
 });
@@ -138,9 +139,7 @@ function destroy(id) {
                             <div>
                                 <b>Customer Name:</b> {{ customer.name }}
                             </div>
-                            <!-- <div>
-                                <b>Address:</b> {{ customer.address }}
-                            </div> -->
+                           
                             <div>
                                 <b>Phone No.:</b> {{ customer.phone }}
                             </div>
@@ -169,13 +168,13 @@ function destroy(id) {
                                         <input type="hidden " v-model="invoiceForm.sales_id" name="sales_id" disabled>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
+                                <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block text-sm font-medium text-gray-900 dark:text-white">Select Item</label>
                                             <select id="particulars" v-model="invoiceForm.particulars" name="particulars" for='particulars' class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Customer">
                                                 <option value="" disabled selected hidden> Choose Item</option>
-                                                <option v-for="(name, id) in items" :key="id" :value="id">{{ name }}</option>
+                                                <option v-for="item in items" :value="item.id">{{ item.name }}({{ item.main_stock }} {{ item.units_main }}, {{ item.secondary_stock }}{{ item.units_secondary }})</option>
                                                
                                             </select>
                                         </div>
@@ -216,6 +215,13 @@ function destroy(id) {
                                         <div class="mb-6">
                                             <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
                                             <input type="text" v-model="invoiceForm.quantity" id="quantity" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <div class="mb-6">
+                                            <label for="Price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                            <input type="text" v-model="invoiceForm.price" id="price" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                                         </div>
                                     </div>
 
@@ -441,6 +447,20 @@ function destroy(id) {
                                         </div>
                                     </div> <br>
 
+                                    <div class="float-right" style="margin-right:320px">
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-2">
+                                        
+                                            <label for="payment_mode" class="mt-3 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Mode</label>
+                                            <select id="payment_mode" v-model="salesForm.payment_mode" name="payment_mode" for='payment_mode' required class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                                <option value="" disabled selected hidden>Choose Payment Mode</option>
+                                                <option value="CASH">CASH</option>
+                                                <option value="UPI">UPI</option>
+                                                <option value="NET BANKING">NET BANKING</option>
+                                            </select>
+                                        </div>
+                                        
+                                    </div> <br>
+
 
                                     <div class="float-right" style="margin-right:315px">
                                         <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
@@ -448,27 +468,24 @@ function destroy(id) {
                                             <br>
                                             <div >Grand Total: {{ sale.grand_total }}</div>
                                             <br>
-                                            <button type="submit" class="mt-3 mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Calculate</button>
-
+                                            
                                         </div>
-                                    </div> <br>
+                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-10">
+                                            <button type="submit" class="mt-3 mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Calculate/Save</button>
+                                            <div class="mt-7 ml-7">
+                                                <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >
+                                                    <div><u>Download Invoice</u></div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
                                 </form>
 
-                                <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
+                                <!-- <div class="grid grid-cols-2 md:grid-cols-2 gap-4 p-5">
 
-
-                                    <div>
-                                        <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >
-                                            <div><u>Download Invoice</u></div>
-                                        </a>
-                                    </div>
-                                    <div>
-
-                                    </div>
-
-                                </div>
+                                </div> -->
                             </div>
                     </div>
                 </div>

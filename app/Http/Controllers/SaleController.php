@@ -193,7 +193,7 @@ class SaleController extends Controller
         $customer=Customer::where('id',$sale->customer_id)->first();
         // dd($customer->id);
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
-        $items=Item::pluck('name','id');
+        $items=Item::all();
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 
@@ -287,7 +287,7 @@ class SaleController extends Controller
             $batches=Batch::pluck('batch_no','id');
 
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
-            $items=Item::pluck('name','id');
+            $items=Item::all();
             return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
         }
         else
@@ -396,7 +396,7 @@ class SaleController extends Controller
             $batches=Batch::pluck('batch_no','id');
 
             $details=Detail::where('sales_id',$sale->id)->paginate(10);
-            $items=Item::pluck('name','id');
+            $items=Item::all();
             return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
         }
 
@@ -586,7 +586,7 @@ class SaleController extends Controller
         $customer=Customer::where('id',$sale->customer_id)->first();
 
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
-        $items=Item::pluck('name','id');
+        $items=Item::all();
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 
@@ -611,6 +611,7 @@ class SaleController extends Controller
         $sale->logistic_charge=$request->logistic_charge;
         $sale->handling_charge=$request->handling_charge;
         $sale->discount=$request->discount;
+        $sale->payment_mode=$request->payment_mode;
         $sale->save();
 
         if (Settlement::where('customer_id', $sale->customer_id)->exists()) {
@@ -637,7 +638,9 @@ class SaleController extends Controller
         $customer=Customer::where('id',$sale->customer_id)->first();
 
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
-        $items=Item::pluck('name','id');
-        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items'));
+        $items=Item::all();
+        $batches=Batch::pluck('batch_no','id');
+
+        return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 }
