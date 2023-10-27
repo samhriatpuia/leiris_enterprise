@@ -168,7 +168,7 @@ function destroy(id) {
                                         <input type="hidden " v-model="invoiceForm.sales_id" name="sales_id" disabled>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
+                                <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="unit" class="block text-sm font-medium text-gray-900 dark:text-white">Select Item</label>
@@ -203,14 +203,7 @@ function destroy(id) {
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- <div class="mt-5">
-                                        <div class="mb-6">
-                                            <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                            <input type="text" v-model="invoiceForm.price" id="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
-                                        </div>
-                                    </div> -->
-
-
+                                   
                                     <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
@@ -218,12 +211,12 @@ function destroy(id) {
                                         </div>
                                     </div>
 
-                                    <div class="mt-5">
+                                    <!-- <div class="mt-5">
                                         <div class="mb-6">
                                             <label for="Price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                                             <input type="text" v-model="invoiceForm.price" id="price" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="mt-5">
                                         <div class="mb-6">
