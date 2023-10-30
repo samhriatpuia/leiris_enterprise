@@ -9,6 +9,7 @@ use App\Http\Controllers\Sale2Controller;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SettlementController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Foundation\Application;
 
 use Illuminate\Support\Facades\Route;
@@ -134,6 +135,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/groups/delete/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
     Route::get('/groups/edit/{id}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::put('/groups/update', [GroupController::class, 'update'])->name('groups.update');
+
+    // Expenses
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses/store',[ExpenseController::class, 'store'])->name('expenses.store');
+    Route::delete('/expenses/delete/{id}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+    Route::get('/expenses/edit/{id}', [ExpenseController::class, 'edit'])->name('expenses.edit');
+    Route::put('/expenses/update', [ExpenseController::class, 'update'])->name('expenses.update');
 });
 
 
