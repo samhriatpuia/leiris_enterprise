@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->string('HSN')->nullable();
+            // $table->string('HSN')->nullable();
             $table->bigInteger('item_id')->unsigned();
             $table->string('purchase_price')->nullable();
             $table->string('mrp')->nullable();

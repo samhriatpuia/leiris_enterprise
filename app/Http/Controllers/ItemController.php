@@ -46,7 +46,7 @@ class ItemController extends Controller
 
             'mrp'=> 'required',
             'batch_no'=> 'required',
-            'HSN'=> 'required',
+            // 'HSN'=> 'required',
             'manufacture_date'=> 'required',
             'expiry_date'=> 'required',
             'units_main'=> 'required',
@@ -72,7 +72,7 @@ class ItemController extends Controller
         $batch=new Batch;
         $batch->mrp=$request->mrp;
         $batch->batch_no=$request->batch_no;
-        $batch->HSN=$request->HSN;
+        // $batch->HSN=$request->HSN;
         $batch->manufacture_date=$request->manufacture_date;
         $batch->expiry_date=$request->expiry_date;
         $batch->units_main=$request->units_main;
@@ -194,7 +194,11 @@ class ItemController extends Controller
         ->latest() // Order by the created_at column in descending order (latest first)
         ->paginate(10);
 
-        return Inertia::render('Batch/Index',compact('item','batches'));
+        $theBatch=$item->batches()->first();
+
+        // dd($theBatch->main_selling_price);
+
+        return Inertia::render('Batch/Index',compact('item','batches','theBatch'));
     }
 
 
@@ -205,7 +209,7 @@ class ItemController extends Controller
 
             'mrp'=> 'required',
             'batch_no'=> 'required',
-            'HSN'=> 'required',
+            // 'HSN'=> 'required',
             'manufacture_date'=> 'required',
             'expiry_date'=> 'required',
             'units_main'=> 'required',
@@ -225,7 +229,7 @@ class ItemController extends Controller
         $batch=new Batch;
         $batch->mrp=$request->mrp;
         $batch->batch_no=$request->batch_no;
-        $batch->HSN=$request->HSN;
+        // $batch->HSN=$request->HSN;
         $batch->manufacture_date=$request->manufacture_date;
         $batch->expiry_date=$request->expiry_date;
         $batch->units_main=$request->units_main;

@@ -8,7 +8,7 @@ import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
-
+import { onMounted } from 'vue';
 
 
 const props = defineProps({
@@ -19,9 +19,10 @@ const props = defineProps({
     batches: {
         batches: Object
     },
-    // items: {
-    //     items: Object
-    // },
+    theBatch: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 
@@ -29,20 +30,20 @@ const props = defineProps({
 
 const form = useForm({
 
-    main_selling_price: '',
-    secondary_selling_price: '',
-    mrp: '',
+    main_selling_price: props.theBatch.id,
+    secondary_selling_price: props.theBatch.secondary_selling_price,
+    mrp: props.theBatch.mrp,
     batch_no: '',
-    HSN: '',
+    // HSN: '',
     manufacture_date: '',
     expiry_date: '',
-    units_main: '',
-    units_secondary: '',
-    units_relation: '',
-    secondary_unit_price: '',
-    purchase_price: '',
-    main_stock: '',
-    main_selling_price: '',
+    units_main: props.theBatch.units_main,
+    units_secondary: props.theBatch.units_secondary,
+    units_relation: props.theBatch.units_relation,
+    secondary_unit_price: props.theBatch.secondary_unit_price,
+    purchase_price: props.theBatch.purchase_price,
+    main_stock: props.theBatch.main_stock,
+    main_selling_price: props.theBatch.main_selling_price,
 
     item_id: props.item.id,
 
@@ -61,6 +62,36 @@ function destroy(id) {
 
     }
 }
+
+
+const number1Input = ref(null);
+const number2Input = ref(null);
+const resultLabel = ref(null);
+
+const updateResult = () => {
+  const num1 = parseFloat(number1Input.value.value);
+  const num2 = parseFloat(number2Input.value.value);
+
+  if (!isNaN(num1) && !isNaN(num2)) {
+    resultLabel.value.textContent = "Result(Main Stock x Units Relation): " + num1 * num2;
+  } else {
+    resultLabel.value.textContent = "Result(Main Stock x Units Relation): ";
+  }
+};
+
+onMounted(() => {
+  number1Input.value = document.getElementById("main_stock");
+  number2Input.value = document.getElementById("units_relation");
+  resultLabel.value = document.getElementById("resultLabel");
+
+  if (number1Input.value && number2Input.value) {
+    number1Input.value.addEventListener("input", updateResult);
+    number2Input.value.addEventListener("input", updateResult);
+    
+    // Call updateResult to handle the default values
+    updateResult();
+  }
+});
 </script>
 
 <template>
@@ -219,12 +250,12 @@ function destroy(id) {
                                             <label for="batch_no" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Batch Number</label>
                                         </div>
 
-                                        <div class="relative z-0 w-full mb-6 group">
+                                        <!-- <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.HSN" name="HSN" id="HSN" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                            <!-- <div v-if="errors.HSN">{{ errors.HSN }}</div> -->
+                                            
                                             <label for="HSN" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">HSN</label>
 
-                                        </div>
+                                        </div> -->
 
 
                                     </div>
@@ -252,15 +283,13 @@ function destroy(id) {
                                                 <option value="" disabled selected hidden>Choose Units(main)</option>
                                                 <option value="BAG">Bag</option>
                                                 <option value="CASE">Case</option>
-                                                <option value="PIECE">Piece</option>
                                                 <option value="TIN">Tin</option>
-                                                <option value="PACKET">Packet</option>
                                             </select>
-                                            <!-- <div v-if="errors.units_main">{{ errors.units_main }}</div> -->
+                                           
                                         </div>
                                         <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.main_stock" name="main_stock" id="main_stock" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                            <!-- <div v-if="errors.main_stock">{{ errors.main_stock }}</div> -->
+                                          
                                             <label for="main_stock" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Main Stock</label>
                                         </div>
 
@@ -280,15 +309,26 @@ function destroy(id) {
 
                                         <div class="relative z-0 w-full mb-6 group">
                                             <input type="text" v-model="form.units_relation" name="units_relation" id="units_relation" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                            <!-- <div v-if="errors.units_relation">{{ errors.units_relation }}</div> -->
+                                           
                                             <label for="units_relation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Relation</label>
                                         </div>
 
                                         <div class="relative z-0 w-full mb-6 group">
-                                            <div class="relative z-0 w-full mb-6 group">
+                                            <!-- <div class="relative z-0 w-full mb-6 group">
                                                 <input type="text" v-model="form.units_secondary" name="units_secondary" id="units_secondary" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                                <!-- <div v-if="errors.units_secondary">{{ errors.units_secondary }}</div> -->
+                                               
                                                 <label for="units_secondary" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Secondary</label>
+                                            </div> -->
+                                            <div class="relative z-0 w-full mb-6 group">
+                                                <select id="units_secondary" v-model="form.units_secondary" name="units_secondary" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Units(main)">
+                                                    <option value="" disabled selected hidden>Choose Units(Secondary)</option>
+                                                    <option value="PIECE">Piece</option>
+                                                    <option value="Packet">Packet</option>
+                                                    <option value="DOZEN">Dozen</option>
+                                                    <option value="KG">KG</option>
+                                                    
+                                                </select>
+                                           
                                             </div>
                                         </div>
 
@@ -300,6 +340,10 @@ function destroy(id) {
                                         </div>
 
                                     </div>
+                                    <div class="grid md:grid-cols-3 md:gap-6 ">
+                                        <div id="resultLabel">Result(Main Stock x Units Relation):</div>
+                                    </div>
+                                    <br>
                                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                 </form>
                         </div>
