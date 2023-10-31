@@ -27,10 +27,18 @@ class SaleController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request->search_data);
-        $sales=Sale::where('customer_name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
+        
+        if (empty($request->date)) {
+            $sales=Sale::where('customer_name','like', '%' .$request->search_data. '%')->orderBy('created_at', 'desc')->paginate(10);
 
-        return Inertia::render('Sales/Index',compact('sales'));
+            return Inertia::render('Sales/Index',compact('sales'));
+        } else {
+
+            $sales=Sale::where('date','like', '%' .$request->date. '%')->orderBy('created_at', 'desc')->paginate(10);
+
+            return Inertia::render('Sales/Index',compact('sales'));
+        }
+        
 
     }
 
@@ -130,8 +138,9 @@ class SaleController extends Controller
      */
     public function update(Request $request)
     {
+        // dd($request->id);
         $sale=Sale::findOrFail($request->id);
-        $sale2=Sale2::findOrFail($request->id);
+       
         $request->validate([
             'customer_id' => 'required',
             'date' => 'required',
@@ -139,7 +148,7 @@ class SaleController extends Controller
             'logistic_charge' => 'required',
             'handling_charge' => 'required',
             'discount' => 'required',
-            'scheme' => 'required',
+            // 'scheme' => 'required',
             // 'sub_total' => 'required',
 
         ]);
@@ -158,17 +167,7 @@ class SaleController extends Controller
         $sale->save();
 
 
-        $sale2->customer_id = $request->customer_id;
-        $sale2->date = $request->date;
-        $sale2->invoice_number = $request->invoice_number;
-        $sale2->logistic_charge = $request->logistic_charge;
-        $sale2->handling_charge = $request->handling_charge;
-        $sale2->discount = $request->discount;
-        $sale2->scheme = $request->scheme;
-
-        $sale2->customer_name = $customer->name;
-
-        $sale2->save();
+       
 
 
 
