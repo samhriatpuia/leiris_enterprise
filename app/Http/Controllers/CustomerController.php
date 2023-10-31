@@ -102,7 +102,7 @@ class CustomerController extends Controller
         $customer=Customer::findOrFail($request->id);
         $request->validate([
             'name' => 'required',
-            'gst' => 'required',
+            // 'gst' => 'required',
             'address' => 'required',
             'phone' => 'required',
             'bank_account' => 'required',

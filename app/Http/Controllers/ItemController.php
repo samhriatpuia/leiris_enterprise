@@ -130,37 +130,23 @@ class ItemController extends Controller
             'name' => 'required',
 
             'gst' => 'required',
-            // 'HSN' => 'required',
-            // 'stock_opening' => 'required',
-            // 'purchase_price' => 'required',
-            // 'selling_price' => 'required',
-            // 'batch_no' => 'required',
-            // 'manufacture_date' => 'required',
-            // 'expiry_date' => 'required',
-            // 'units_main' => 'required',
-            // 'units_secondary' => 'required',
-            // 'units_relation' => 'required',
-            // 'secondary_unit_price'=>'required',
+          
+            
+           
         ]);
 
 
         $item->name = $request->name;
-
         $item->gst = $request->gst;
-        // $item->HSN = $request->HSN;
-        // $item->stock_opening = $request->stock_opening;
-        // $item->purchase_price = $request->purchase_price;
-        // $item->selling_price = $request->selling_price;
-        // $item->batch_no = $request->batch_no;
-        // $item->manufacture_date = $request->manufacture_date;
-        // $item->expiry_date = $request->expiry_date;
-        // $item->units_main = $request->units_main;
-        // $item->units_secondary = $request->units_secondary;
-        // $item->units_relation = $request->units_relation;
-        // $item->secondary_unit_price=$request->secondary_unit_price;
+        $item->units_main = $request->units_main;
+        $item->units_secondary = $request->units_secondary;
+        $item->units_relation = $request->units_relation;
+        $item->main_stock = $request->main_stock;
+        $item->secondary_stock = $request->secondary_stock;
+        $item->main_selling_price = $request->main_selling_price;
+        $item->secondary_selling_price = $request->secondary_selling_price;
 
         $item->save();
-
 
         return redirect()->route('items.index');
     }

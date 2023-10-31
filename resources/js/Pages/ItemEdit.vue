@@ -21,22 +21,20 @@ const props = defineProps({
 
 const form = useForm({
     id: props.item.id,
-    title: props.item.title,
+  
     name: props.item.name,
-    group: props.item.group,
+  
     gst: props.item.gst,
-    HSN: props.item.HSN,
+   
     
-    stock_opening: props.item.stock_opening,
-    purchase_price: props.item.purchase_price,
-    selling_price:props.item.selling_price,
-    batch_no:props.item.batch_no,
-    manufacture_date:props.item.manufacture_date,
-    expiry_date:props.item.expiry_date,
-    units_main:props.item.units_main,
-    units_secondary:props.item.units_secondary,
+    units_main: props.item.units_main,
+    units_secondary: props.item.units_secondary,
     units_relation:props.item.units_relation,
-    secondary_unit_price: props.item.secondary_unit_price,
+    main_stock:props.item.main_stock,
+    secondary_stock:props.item.secondary_stock,
+    main_selling_price:props.item.main_selling_price,
+    secondary_selling_price:props.item.secondary_selling_price,
+    
 });
 
 const submit = () => {
@@ -63,18 +61,6 @@ const submit = () => {
                                         <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Item Name</label>
 
                                     </div>
-                                    <!-- <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.HSN" name="HSN" id="HSN" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.HSN">{{ errors.HSN }}</div>
-                                        <label for="HSN" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">HSN</label>
-
-                                    </div> -->
-
-                                    
-                                </div>
-
-
-                                <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 w-full mb-6 group">
                                         <!-- Choose GST -->
                                         <select id="gst" v-model="form.gst" name="gst" for='gst' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
@@ -87,82 +73,68 @@ const submit = () => {
                                         </select>
                                         <div v-if="errors.gst">{{ errors.gst }}</div>
                                     </div>
-                                    <!-- <div class="relative z-0 w-full mb-6 group">
-                                       
-                                        <select id="group" v-model="form.group" name="group" for='group' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="choose">
-                                            <option value="" disabled selected hidden> Choose Group</option>
-                                            <option v-for="(name, id) in groups" :key="id" :value="name">{{ name }}</option>
-                                        </select>
-                                        <div v-if="errors.group">{{ errors.group }}</div>
-                                    </div> -->
+
+                                    
                                 </div>
 
 
-                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.stock_opening" name="stock_opening" id="stock_opening" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.stock_opening">{{ errors.stock_opening }}</div>
-                                        <label for="stock_opening" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Stock Opening</label>
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.purchase_price" name="purchase_price" id="purchase_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.purchase_price">{{ errors.purchase_price }}</div>
-                                        <label for="purchase_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Purchase Price</label>
-                                    </div>
-                                </div>
                                 <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.selling_price" name="selling_price" id="selling_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.selling_price">{{ errors.selling_price }}</div>
-                                        <label for="selling_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Selling Price</label>
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" v-model="form.batch_no" name="batch_no" id="batch_no" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.batch_no">{{ errors.batch_no }}</div>
-                                        <label for="batch_no" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Batch Number</label>
-                                    </div>
-                                </div> -->
-
-
-                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="date" v-model="form.manufacture_date" name="manufacture_date" id="manufacture_date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.manufacture_date">{{ errors.manufacture_date }}</div>
-                                        <label for="manufacture_date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Manufacturing Date</label>
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="date" v-model="form.expiry_date" name="expiry_date" id="expiry_date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <div v-if="errors.expiry_date">{{ errors.expiry_date }}</div>
-                                        <label for="expiry_date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Expiry Date</label>
-                                    </div>
-                                </div> -->
-
-
-                                <!-- <div class="grid md:grid-cols-3 md:gap-6">
-                                    
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        
-                                        <select id="units_main" v-model="form.units_main" name="units_main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose Units(main)">
-                                            <option value="" disabled selected hidden>Choose Units(main)</option>
-                                            <option value="BAG">Bag</option>
-                                            <option value="CASE">Case</option>
-                                            <option value="PIECE">Piece</option>
-                                            <option value="TIN">Tin</option>
-                                            <option value="PACKET">Packet</option>
-                                        </select>
+                                        <input type="text" v-model="form.units_main" name="units_main" id="units_main" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.units_main">{{ errors.units_main }}</div>
+                                        <label for="units_main" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Main</label>
                                     </div>
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.units_secondary" name="units_secondary" id="units_secondary" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.units_secondary">{{ errors.units_secondary }}</div>
-                                        <label for="units_secondary" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Secondary</label>
+                                        <label for="units_secondary" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Unit Secondary</label>
                                     </div>
+                                </div>
+
+
+                                <div class="grid md:grid-cols-2 md:gap-6">
+                                    
+                                </div>
+                                <div class="grid md:grid-cols-2 md:gap-6">
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.units_relation" name="units_relation" id="units_relation" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <div v-if="errors.units_relation">{{ errors.units_relation }}</div>
-                                        <label for="units_relation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Units Relation</label>
+                                        <label for="units_relation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Unit Relation</label>
                                     </div>
-                                </div> -->
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" v-model="form.main_stock" name="main_stock" id="main_stock" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                        <div v-if="errors.main_stock">{{ errors.main_stock }}</div>
+                                        <label for="main_stock" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Main Stock</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="grid md:grid-cols-2 md:gap-6">
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" v-model="form.secondary_stock" name="secondary_stock" id="secondary_stock" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                        <div v-if="errors.secondary_stock">{{ errors.secondary_stock }}</div>
+                                        <label for="secondary_stock" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Secondary Stock</label>
+                                    </div>
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" v-model="form.main_selling_price" name="main_selling_price" id="main_selling_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                        <div v-if="errors.main_selling_price">{{ errors.main_selling_price }}</div>
+                                        <label for="main_selling_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Main Selling Price</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="grid md:grid-cols-2 md:gap-6">
+                                    
+                                   
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" v-model="form.secondary_selling_price" name="secondary_selling_price" id="secondary_selling_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                        <div v-if="errors.secondary_selling_price">{{ errors.secondary_selling_price }}</div>
+                                        <label for="secondary_selling_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Secondary Selling Price</label>
+                                    </div>
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        
+                                    </div>
+                                </div>
 
 
                                 <!-- <div class="grid md:grid-cols-3 md:gap-6">
