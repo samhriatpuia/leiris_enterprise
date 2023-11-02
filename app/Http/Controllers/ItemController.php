@@ -41,20 +41,18 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required',
             'gst' => 'required',
-            // 'main_selling_price'=> 'required',
-            // 'secondary_selling_price'=> 'required',
 
             'mrp'=> 'required',
             'batch_no'=> 'required',
-            // 'HSN'=> 'required',
+           
             'manufacture_date'=> 'required',
             'expiry_date'=> 'required',
             'units_main'=> 'required',
             'main_selling_price'=>'required',
             'main_stock'=>'required',
-            'units_secondary'=> 'required',
-            'units_relation'=> 'required',
-            'secondary_unit_price'=> 'required',
+            // 'units_secondary'=> 'required',
+            // 'units_relation'=> 'required',
+            // 'secondary_unit_price'=> 'required',
             'purchase_price'=> 'required',
 
 

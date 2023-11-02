@@ -208,6 +208,13 @@ class SaleController extends Controller
 
         ]);
 
+        if($request->discount=='')
+        {
+            $request->discount=0;
+            
+        }
+        // dd($request->discount);
+
         if(is_null($request->new_name))
         {
             $item=Item::where('id',$request->particulars)->first();

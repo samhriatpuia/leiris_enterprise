@@ -46,13 +46,13 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'gst' => 'required',
+            // 'gst' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'bank_account' => 'required',
-            'bank_ifsc' => 'required',
-            'bank_name' => 'required',
-            'bank_branch' => 'required',
+            // 'bank_account' => 'required',
+            // 'bank_ifsc' => 'required',
+            // 'bank_name' => 'required',
+            // 'bank_branch' => 'required',
 
         ]);
         // dd($request->name);
@@ -105,10 +105,10 @@ class CustomerController extends Controller
             // 'gst' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'bank_account' => 'required',
-            'bank_ifsc' => 'required',
-            'bank_name' => 'required',
-            'bank_branch' => 'required',
+            // 'bank_account' => 'required',
+            // 'bank_ifsc' => 'required',
+            // 'bank_name' => 'required',
+            // 'bank_branch' => 'required',
 
         ]);
 
