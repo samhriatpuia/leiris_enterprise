@@ -67,17 +67,11 @@ const showingNavigationDropdown = ref(false);
 
                         
 
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('history.index')" :active="route().current('history.index')">
-                                    Sale History
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink :href="route('basic.index')" :active="route().current('basic.index')">
+                                    Users
                                 </NavLink>
-                            </div> -->
-
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('settlements.index')" :active="route().current('settlements.index')">
-                                    Settlement
-                                </NavLink>
-                            </div> -->
+                            </div>
 
                         </div>
 

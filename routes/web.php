@@ -10,6 +10,7 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\BasicController;
 use Illuminate\Foundation\Application;
 
 use Illuminate\Support\Facades\Route;
@@ -143,6 +144,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/expenses/delete/{id}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
     Route::get('/expenses/edit/{id}', [ExpenseController::class, 'edit'])->name('expenses.edit');
     Route::put('/expenses/update', [ExpenseController::class, 'update'])->name('expenses.update');
+    // Users
+    Route::get('/basic/users', [BasicController::class, 'index'])->name('basic.index');
+    Route::get('/basic/users/create', [BasicController::class, 'create'])->name('basic.create');
+    Route::post('/basic/users/store',[BasicController::class, 'store'])->name('basic.store');
+    Route::get('/basic/user/edit/{id}', [BasicController::class, 'edit'])->name('basic.edit');
+    Route::put('/basic/update', [BasicController::class, 'update'])->name('basic.update');
 });
 
 
