@@ -21,6 +21,7 @@ class Sale extends Model
         'grand_total',
         'customer_name',
         'payment_mode',
+        'role',
     ];
 
 

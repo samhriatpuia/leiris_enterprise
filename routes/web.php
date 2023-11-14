@@ -110,11 +110,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/settlements/details/{id}', [SettlementController::class, 'settlementDetailsIndex'])->name('settlements.details.index');
     Route::post('/settlements/details/store', [SettlementController::class, 'settlementDetailsStore'])->name('settlements.details.store');
     Route::delete('/settlements/details/delete/{id}', [SettlementController::class, 'settlementDetailsDelete'])->name('settlements.details.delete');
-});
 
 
-
-Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
     Route::post('/items/store',[ItemController::class, 'store'])->name('items.store');
@@ -128,6 +125,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/items/batch/{id}', [ItemController::class, 'bacthes'])->name('items.batch');
     Route::post('/items/batch', [ItemController::class, 'bacthStore'])->name('batches.store');
     Route::delete('/bacthes/delete/{id}', [ItemController::class, 'batchdestroy'])->name('batches.destroy');
+
+
+    
+});
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    
 
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');

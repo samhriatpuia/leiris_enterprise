@@ -34,6 +34,7 @@ const form = useForm({
     secondary_stock:props.item.secondary_stock,
     main_selling_price:props.item.main_selling_price,
     secondary_selling_price:props.item.secondary_selling_price,
+    role: props.item.role,
     
 });
 
@@ -132,8 +133,14 @@ const submit = () => {
                                         <label for="secondary_selling_price" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Secondary Selling Price</label>
                                     </div>
                                     <div class="relative z-0 w-full mb-6 group">
-                                        
-                                    </div>
+                                        <!-- Choose Role -->
+                                        <select id="role" v-model="form.role" name="role" for='role' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <option value="" disabled selected >Choose User Role</option>
+                                            <option value="user">User1 for (LE)</option>
+                                            <option value="user2">User2 for (LC-Chips)</option>
+                                        </select>
+                                        <div v-if="errors.role">{{ errors.role }}</div>
+                                    </div> 
                                 </div>
                                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                             </form>

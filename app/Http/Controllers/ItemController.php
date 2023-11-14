@@ -8,6 +8,7 @@ use App\Models\Batch;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -16,9 +17,20 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::orderBy('created_at', 'desc')
-                        ->paginate(10);
-
+        $user = Auth::user();
+        $userRole=$user->role;
+        if($userRole=='user')
+        {
+            $items = Item::where('role','user')->orderBy('created_at', 'desc')->paginate(10);
+        }
+        else if($userRole=='user2')
+        {
+            $items = Item::where('role','user2')->orderBy('created_at', 'desc')->paginate(10);
+        }
+        else
+        {
+            $items = Item::orderBy('created_at', 'desc')->paginate(10);
+        }
 
         return Inertia::render('Items',compact('items'));
     }
@@ -50,11 +62,9 @@ class ItemController extends Controller
             'units_main'=> 'required',
             'main_selling_price'=>'required',
             'main_stock'=>'required',
-            // 'units_secondary'=> 'required',
-            // 'units_relation'=> 'required',
-            // 'secondary_unit_price'=> 'required',
+           
             'purchase_price'=> 'required',
-
+            'role'=>'required',
 
         ]);
         // dd($request->name);
@@ -63,6 +73,7 @@ class ItemController extends Controller
             'gst' => $request->gst,
             'main_selling_price'=> $request->main_selling_price,
             'secondary_selling_price'=> $request->secondary_unit_price,
+            'role'=>$request->role,
         ]);
 
         $item=Item::where('name',$request->name)->first();
@@ -125,12 +136,7 @@ class ItemController extends Controller
         // dd("YEST");
         $item=Item::findOrFail($request->id);
         $request->validate([
-            'name' => 'required',
-
-            'gst' => 'required',
-          
-            
-           
+            'name' => 'required',     
         ]);
 
 
@@ -143,7 +149,7 @@ class ItemController extends Controller
         $item->secondary_stock = $request->secondary_stock;
         $item->main_selling_price = $request->main_selling_price;
         $item->secondary_selling_price = $request->secondary_selling_price;
-
+        $item->role=$request->role;
         $item->save();
 
         return redirect()->route('items.index');

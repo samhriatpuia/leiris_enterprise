@@ -14,13 +14,24 @@ use App\Models\Detail2;
 use App\Models\Item;
 use App\Models\Batch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
     public function index()
     {
-        $sales = Sale::orderBy('created_at', 'desc')
-                        ->paginate(10);
+        $user = Auth::user();
+        $userRole=$user->role;
+
+        if($userRole=='admin')
+        {
+            $sales = Sale::orderBy('created_at', 'desc')->paginate(10);
+        }
+        else
+        {
+            $sales = Sale::where('role',$userRole)->orderBy('created_at', 'desc')->paginate(10);
+        }
+        
         return Inertia::render('Sales/Index',compact('sales'));
     }
 
@@ -47,8 +58,24 @@ class SaleController extends Controller
      */
     public function create()
     {
+        $count=Sale::count(); 
+        $user = Auth::user();
+        $userRole=$user->role;
+        if($userRole=='user')
+        {
+            $invoiceNumber='LE-'.$count;
+        }
+        else if($userRole=='user2')
+        {
+            $invoiceNumber='LC-'.$count;
+        }
+        else
+        {
+            $invoiceNumber=$count;
+        }
+
         $customers=Customer::pluck('name','id');
-        return Inertia::render('Sales/Create',compact('customers'));
+        return Inertia::render('Sales/Create',compact('customers','invoiceNumber'));
     }
 
     /**
@@ -56,16 +83,16 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->new_name);
-        // dd($request->invoice_number);
         $request->validate([
             'date' => 'required',
             'invoice_number' => 'required',
             'customer_id' => 'required_without:new_name',
             'new_name' => 'required_without:customer_id',
 
-
         ]);
+
+        $user = Auth::user();
+        $userRole=$user->role;
 
         if (is_null($request->new_name))
         {
@@ -75,9 +102,8 @@ class SaleController extends Controller
                 'customer_id' => $request->customer_id,
                 'date' => $request->date,
                 'invoice_number' => $request->invoice_number,
-
                 'customer_name' => $customer->name,
-
+                'role'=>$userRole,
             ]);
 
             $sale=Sale::where('customer_id',$request->customer_id)->where('invoice_number',$request->invoice_number)->first();
@@ -103,6 +129,7 @@ class SaleController extends Controller
                 'date' => $request->date,
                 'invoice_number' => $request->invoice_number,
                 'customer_name' => $customer->name,
+                'role'=>$userRole,
             ]);
 
             $sale=Sale::where('customer_id',$customer->id)->latest()->first();
@@ -148,6 +175,7 @@ class SaleController extends Controller
             'logistic_charge' => 'required',
             'handling_charge' => 'required',
             'discount' => 'required',
+            'role'=>'required',
             // 'scheme' => 'required',
             // 'sub_total' => 'required',
 
@@ -161,16 +189,10 @@ class SaleController extends Controller
         $sale->handling_charge = $request->handling_charge;
         $sale->discount = $request->discount;
         $sale->scheme = $request->scheme;
-
+        $sale->role = $request->role;
         $sale->customer_name = $customer->name;
 
         $sale->save();
-
-
-       
-
-
-
 
         return redirect()->route('sales.index');
     }
@@ -186,34 +208,33 @@ class SaleController extends Controller
 
     public function invoiceIndex($id)
     {
+        $user = Auth::user();
+        $userRole=$user->role;
+
         $sale=Sale::findOrFail($id);
         // dd($sale->id);
         $batches=Batch::pluck('batch_no','id');
         $customer=Customer::where('id',$sale->customer_id)->first();
         // dd($customer->id);
         $details=Detail::where('sales_id',$sale->id)->paginate(10);
-        $items=Item::all();
+        $items=Item::where('role',$userRole)->get();
         return Inertia::render('Sales/Invoice',compact('customer','sale','details','items','batches'));
     }
 
 
     public function invoiceStore(Request $request)
     {
-        // dd($request->batch_no);
         $request->validate([
-            // 'particulars' => 'required',
             'quantity'=>'required',
             'unit'=>'required',
-            // 'price'=>'required'
-
         ]);
+
 
         if($request->discount=='')
         {
             $request->discount=0;
             
         }
-        // dd($request->discount);
 
         if(is_null($request->new_name))
         {

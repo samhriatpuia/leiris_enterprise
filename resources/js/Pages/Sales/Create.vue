@@ -38,6 +38,10 @@ const props = defineProps({
     customers: {
         customers: Object,
     },
+    invoiceNumber: {
+
+    },
+    
     methods: {
     closeModal() {
       this.$emit('close');
@@ -48,7 +52,7 @@ const props = defineProps({
 const form = useForm({
     customer_id: '',
     date: getTodayFormattedDate(),
-    invoice_number: '',
+    invoice_number: props.invoiceNumber,
     logistic_charge: '',
     handling_charge: '',
     discount : '',
