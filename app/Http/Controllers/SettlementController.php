@@ -6,6 +6,7 @@ use App\Models\Settlement;
 use App\Models\SettlementDetail;
 use App\Models\Sale;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SettlementController extends Controller
@@ -183,5 +184,35 @@ class SettlementController extends Controller
         $theBalance=SettlementDetail::where('settlement_id',$theSettlement->id)->latest()->first();
         
         return Inertia::render('Settlement/DetailsIndex',compact('settlementDetails','theSettlement','theBalance'));
+    }
+
+
+    public function settlementDetailsCreate($id)
+    {
+        $theCustomer=Customer::findOrFail($id);
+        // dd($theUser->id);
+        $Settlement = Settlement::where('customer_id', '=', $id)->first();
+
+        if ($Settlement) {
+            dd("Settlement already Exist");
+        } else {
+            return Inertia::render('Settlement/Opening',compact('theCustomer'));
+        }
+    }
+
+    public function openingStore(Request $request)
+    {
+        $intValue = intval($request->grand_total);
+       
+        Settlement::create([
+            'customer_id' => $request->customer_id,
+            'grand_total' => $intValue,
+            
+        ]);
+        
+
+        $customers = Customer::orderBy('created_at', 'desc')
+                        ->paginate(10);
+        return Inertia::render('Customer/Index',compact('customers'));
     }
 }

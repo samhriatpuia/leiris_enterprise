@@ -131,6 +131,10 @@ function destroy(id) {
                                                     <div>
                                                         <Link :href="route('settlements.details.index',customer.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline">Settlement</Link>
                                                     </div>
+
+                                                    <!-- <div>
+                                                        <Link :href="route('settlements.details.create',customer.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline">Opening Balance</Link>
+                                                    </div> -->
                                                 </div>
                                             </td>
                                         </tr>

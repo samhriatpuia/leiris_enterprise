@@ -110,7 +110,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/settlements/details/{id}', [SettlementController::class, 'settlementDetailsIndex'])->name('settlements.details.index');
     Route::post('/settlements/details/store', [SettlementController::class, 'settlementDetailsStore'])->name('settlements.details.store');
     Route::delete('/settlements/details/delete/{id}', [SettlementController::class, 'settlementDetailsDelete'])->name('settlements.details.delete');
-
+    Route::get('/settlements/details/create/{id}', [SettlementController::class, 'settlementDetailsCreate'])->name('settlements.details.create');
+    Route::post('/settlements/opening/store', [SettlementController::class, 'openingStore'])->name('opening.store');
 
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
