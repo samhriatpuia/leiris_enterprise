@@ -449,6 +449,7 @@ function destroy(id) {
                                                 <option value="CASH">CASH</option>
                                                 <option value="UPI">UPI</option>
                                                 <option value="NET BANKING">NET BANKING</option>
+                                                <option value="CHEQUE">CHEQUE</option>
                                             </select>
                                         </div>
                                         

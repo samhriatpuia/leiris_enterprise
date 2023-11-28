@@ -156,8 +156,8 @@ const submit = () => {
                                             <select id="mode" v-model="form.mode" name="mode" for='mode' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                                                 <option value="" disabled selected hidden>Choose Payment Mode</option>
                                                 <option value="Cash">Cash</option>
-                                                <option value="UPI">UPI</option>
-                                                <option value="UPI">Cheque</option>
+                                                <option value="Upi">UPI</option>
+                                                <option value="Cheque">Cheque</option>
                                                 <option value="Net Banking">Net Banking</option>
                                             </select>
                                             <div v-if="form.errors.mode">{{ form.errors.mode }}</div>

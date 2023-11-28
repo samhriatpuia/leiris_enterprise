@@ -67,14 +67,21 @@ class ItemController extends Controller
             'role'=>'required',
 
         ]);
-        // dd($request->name);
-        Item::create([
-            'name' => $request->name,
-            'gst' => $request->gst,
-            'main_selling_price'=> $request->main_selling_price,
-            'secondary_selling_price'=> $request->secondary_unit_price,
-            'role'=>$request->role,
-        ]);
+        // dd($request->role);
+        // Item::create([
+        //     'name' => $request->name,
+        //     'gst' => $request->gst,
+        //     'main_selling_price'=> $request->main_selling_price,
+        //     'secondary_selling_price'=> $request->secondary_unit_price,
+        //     'role'=>$request->role,
+        // ]);
+        $theItem=new Item;
+        $theItem->name=$request->name;
+        $theItem->gst=$request->gst;
+        $theItem->main_selling_price=$request->main_selling_price;
+        $theItem->secondary_selling_price=$request->secondary_selling_price;
+        $theItem->role=$request->role;
+        $theItem->save();
 
         $item=Item::where('name',$request->name)->first();
 

@@ -48,6 +48,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard',[CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::post('/dashboard/payment',[CustomerController::class, 'payment'])->name('dashboard.payment');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
