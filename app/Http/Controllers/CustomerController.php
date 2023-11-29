@@ -61,6 +61,15 @@ class CustomerController extends Controller
         ->select('particulars', DB::raw('SUM(quantity) as total_amount, SUM(amount) as Amount'))
         ->groupBy('particulars')
         ->paginate(5);
+
+        $salesDetails = DB::table('details')
+            ->select('particulars', 
+                    DB::raw('SUM(CASE WHEN unit IN ("bag", "case", "tin") THEN quantity ELSE 0 END) as `primary`'), 
+                    DB::raw('SUM(CASE WHEN unit IN ("piece", "packet", "dozen", "kg") THEN quantity ELSE 0 END) as `secondary`'), 
+                    DB::raw('SUM(amount) as Amount'))
+            ->groupBy('particulars')
+            ->paginate(5);
+
         
         return Inertia::render('Dashboard',compact('items','total_cash','total_upi','total_cheque','total_netbanking','allItems','salesDetails'));
     }
@@ -106,7 +115,15 @@ class CustomerController extends Controller
 
         $allItems=Item::paginate(5);
 
-        return Inertia::render('Dashboard',compact('items','total_cash','total_upi','total_cheque','total_netbanking','allItems'));
+        $salesDetails = DB::table('details')
+            ->select('particulars', 
+                    DB::raw('SUM(CASE WHEN unit IN ("bag", "case", "tin") THEN quantity ELSE 0 END) as `primary`'), 
+                    DB::raw('SUM(CASE WHEN unit IN ("piece", "packet", "dozen", "kg") THEN quantity ELSE 0 END) as `secondary`'), 
+                    DB::raw('SUM(amount) as Amount'))
+            ->whereBetween('created_at', [$startDateTime, $endDateTime])
+            ->groupBy('particulars')
+            ->paginate(5);
+        return Inertia::render('Dashboard',compact('items','total_cash','total_upi','total_cheque','total_netbanking','allItems','salesDetails'));
 
     }
     /**

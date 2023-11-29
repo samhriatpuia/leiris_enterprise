@@ -183,7 +183,7 @@ const submit = () => {
                                     </div>
                                     <!--  -->
                                     <div>
-                                        <div class="p-4">salesDetails</div>
+                                        <div class="p-4">Sales Details</div>
                                         <div class="pt-5 p-4">
                                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -192,11 +192,14 @@ const submit = () => {
                                                             <th scope="col" class="px-6 py-3">
                                                                 Item
                                                             </th>
-                                                            <!-- <th scope="col" class="px-6 py-3">
-                                                                Sale Amt
-                                                            </th>  -->
                                                             <th scope="col" class="px-6 py-3">
-                                                                Value
+                                                                Primary
+                                                            </th> 
+                                                            <th scope="col" class="px-6 py-3">
+                                                                Secondary
+                                                            </th> 
+                                                            <th scope="col" class="px-6 py-3">
+                                                                Amount
                                                             </th>                                                         
                                                         </tr>
                                                     </thead>
@@ -205,13 +208,17 @@ const submit = () => {
                                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                                 {{ salesDetail.particulars }} <br>
                                                             </th>
-                                                            <!-- <td class="px-6 py-4">
-                                                                {{ salesDetail.total_amount }}
-                                                                
-                                                            </td> -->
                                                             <td class="px-6 py-4">
-                                                                {{ salesDetail.Amount }}
+                                                                {{ salesDetail.primary }}
                                                                 
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                {{ salesDetail.secondary }} <br>
+                                                               
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                
+                                                                {{ salesDetail.Amount }}
                                                             </td>
                                                             
                                                         </tr>

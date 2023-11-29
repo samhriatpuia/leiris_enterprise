@@ -239,7 +239,7 @@ class SaleController extends Controller
         if(is_null($request->new_name))
         {
             $item=Item::where('id',$request->particulars)->first();
-           
+            // dd($item);
             $batch=Batch::where('item_id', $item->id)->where('batch_no', $request->batch_no)->first();
 
             if($request->unit=='primary')
@@ -258,11 +258,14 @@ class SaleController extends Controller
                 $batch->main_stock=$theMainStck;
                 $batch->save();
 
+                 
+
             }
             else
             {
                 $thePrice=$item->secondary_selling_price;
                 $theUnit=$item->units_secondary;
+                // dd($thePrice);
 
                 $newValueOfSecondaryStock=(int)$item->secondary_stock-(int)$request->quantity;
 
@@ -279,8 +282,18 @@ class SaleController extends Controller
                 $batch->main_stock=(float)$theSecStk/(float)($batch->units_relation);
                 $batch->save();
 
+                // $theDetail=new Detail;
+                // $theDetail->particulars=$item->name;
+                // $theDetail->quantity=$request->quantity;
+                // $theDetail->unit=$theUnit;
+                // $theDetail->price=$thePrice;
+                // $theDetail->discount=$request->discount;
+                // $theDetail->amount=($thePrice*$request->quantity)-($request->discount);
+                // $theDetail->sales_id=$request->sales_id;
+                // $theDetail->batch=$request->batch_no;
+                // $theDetail->save();
+    
             }
-
 
             Detail::create([
                 'particulars' => $item->name,
@@ -292,6 +305,9 @@ class SaleController extends Controller
                 'sales_id'=>$request->sales_id,
                 'batch'=>$request->batch_no,
             ]);
+
+           
+           
 
            
 

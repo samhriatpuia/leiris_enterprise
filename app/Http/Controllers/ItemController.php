@@ -79,7 +79,7 @@ class ItemController extends Controller
         $theItem->name=$request->name;
         $theItem->gst=$request->gst;
         $theItem->main_selling_price=$request->main_selling_price;
-        $theItem->secondary_selling_price=$request->secondary_selling_price;
+        $theItem->secondary_selling_price=$request->secondary_unit_price;
         $theItem->role=$request->role;
         $theItem->save();
 

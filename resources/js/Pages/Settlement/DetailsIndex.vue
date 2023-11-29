@@ -77,9 +77,9 @@ const submit = () => {
                                                         Balance
                                                     </th>
 
-                                                    <th scope="col" class="px-6 py-3">
+                                                    <!-- <th scope="col" class="px-6 py-3">
                                                         Balance
-                                                    </th>
+                                                    </th> -->
 
                                                     
                                                     <!-- <th scope="col" class="px-6 py-3">
@@ -107,10 +107,10 @@ const submit = () => {
                                                         
                                                     </td>
 
-                                                    <td class="px-6 py-4">
+                                                    <!-- <td class="px-6 py-4">
                                                         Grand Total: {{ settlementDetail.grand_total }}
                                                         
-                                                    </td>
+                                                    </td> -->
 
                                                     <!-- <td class="px-6 py-4">
                                                         <button @click="destroy(settlementDetail.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</button>
