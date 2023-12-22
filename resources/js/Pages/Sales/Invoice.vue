@@ -211,12 +211,7 @@ function destroy(id) {
                                         </div>
                                     </div>
 
-                                    <!-- <div class="mt-5">
-                                        <div class="mb-6">
-                                            <label for="Price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                            <input type="text" v-model="invoiceForm.price" id="price" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
-                                        </div>
-                                    </div> -->
+                                    
 
                                     <div class="mt-5">
                                         <div class="mb-6">
@@ -239,87 +234,8 @@ function destroy(id) {
                                             Save
                                         </button>
                                     </div>
-                                    <div @click="openModal" class="mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        New Item
-                                    </div>
+                                    
                                 </div>
-
-
-                                <portal to="modals">
-                                    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
-                                        <div class="modal-container bg-white w-1/2 p-6 rounded shadow-lg">
-                                            <h2 class="text-lg font-semibold mb-4">Create New Item</h2>
-
-
-                                            <div class="mb-6">
-                                                <label for="new_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item Name</label>
-                                                <input v-model="invoiceForm.new_name" type="text" id="new_name" name="new_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
-                                                <!-- <div v-if="errors.name">{{ errors.name }}</div> -->
-                                            </div>
-
-                                            <!-- <div class="mb-6">
-                                                <label for="batch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batch</label>
-                                                <input v-model="invoiceForm.batch" type="text" id="batch" name="batch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div> -->
-
-                                            <div class="mb-6">
-                                                <label for="stock_opening" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">stock opening</label>
-                                                <input v-model="invoiceForm.stock_opening" type="text" id="stock_opening" name="stock_opening" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-                                            <div class="mb-6">
-                                                <label for="selling_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">selling price</label>
-                                                <input v-model="invoiceForm.selling_price" type="text" id="selling_price" name="selling_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-                                            <div class="mb-6">
-                                                <label for="units_main" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit(main)</label>
-                                                <select id="units_main" v-model="invoiceForm.units_main" name="units_main" for='units_main' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-                                                    <option value="" disabled selected hidden>Choose Units(main)</option>
-                                                    <option value="BAG">Bag</option>
-                                                    <option value="CASE">Case</option>
-                                                    <option value="PIECE">Piece</option>
-                                                    <option value="TIN">Tin</option>
-                                                    <option value="PACKET">Packet</option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="mb-6">
-                                                <label for="units_secondary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">units secondary</label>
-                                                <input v-model="invoiceForm.units_secondary" type="text" id="units_secondary" name="units_secondary" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-                                            <div class="mb-6">
-                                                <label for="secondary_unit_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">secondary unit price</label>
-                                                <input v-model="invoiceForm.secondary_unit_price" type="text" id="secondary_unit_price" name="secondary_unit_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-                                            <div class="mb-6">
-                                                <label for="units_relation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">units relation</label>
-                                                <input v-model="invoiceForm.units_relation" type="text" id="units_relation" name="units_relation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-
-                                            <div class="mb-6">
-                                                <label for="batch_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batch No.</label>
-                                                <input v-model="invoiceForm.batch_no" type="text" id="batch_no" name="batch_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                            </div>
-
-
-
-                                            <button @click="closeModal" class="mt-4 text-gray-500 hover:text-gray-700">Save</button>
-                                        </div>
-                                    </div>
-                                </portal>
 
 
                             </form>
@@ -456,23 +372,32 @@ function destroy(id) {
                                     </div> <br>
 
 
-                                    <div class="float-right" style="margin-right:315px">
-                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-1">
+                                    <div class="float-right mt-2" style="margin-right:120px">
+                                        <div class="mt-2  gap-1">
                                             <div >Current Balance: {{ sale.current_balance }}</div>
                                             <br>
                                             <div >Grand Total: {{ sale.grand_total }}</div>
                                             <br>
                                             
                                         </div>
-                                        <div class="mt-2 grid grid-cols-2 md:grid-cols-2 gap-10">
+                                        <div class="mt-2 grid grid-cols-3 md:grid-cols-3 gap-10">
                                             <button type="submit" class="mt-3 mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Calculate/Save</button>
+                                            
                                             <div class="mt-7 ml-7">
                                                 <a :href="route('invoice_generate',sale.id)" class="font-medium text-green-600 dark:text-blue-500 hover:underline" >
                                                     <div><u>Download Invoice</u></div>
                                                 </a>
                                             </div>
+                                            <div class="mt-7 ml-7">
+                                                <a :href="route('invoice_generate',sale.id)" class="font-medium text-yellow-600 dark:text-blue-500 hover:underline" >
+                                                    <div><u>Back</u></div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
+
+                                   
+                                    
 
 
                                 </form>
