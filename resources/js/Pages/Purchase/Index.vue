@@ -99,7 +99,7 @@ function destroy(id) {
                                     <tbody>
                                         <tr v-for="purchase in purchases.data" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Customer Name: {{ purchase.customer_name }} <br>
+                                                Vendor: {{ purchase.vendor }} <br>
                                                 Invoice: {{ purchase.invoice_number }}
                                                 <br><small>Date: {{ purchase.date }}</small>
                                                 

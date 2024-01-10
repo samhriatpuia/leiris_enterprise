@@ -6,6 +6,7 @@ import { reactive } from 'vue'
 import { useForm } from "@inertiajs/vue3";
 import { onMounted } from 'vue';
 import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     items: {
@@ -239,12 +240,17 @@ onMounted(() => {
 
 
                                 <div class="grid md:grid-cols-3 md:gap-6 ">
-                                        <div id="resultLabel">Result(Main Stock x Units Relation):</div>
+                                    <div id="resultLabel">Result(Main Stock x Units Relation):</div>
                                 </div>
                                 <br>
 
+                                <div class="grid md:grid-cols-4 md:gap-6 ">
+                                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+                                    <Link :href="route('items.index')" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" >Cancel</Link>
+                                </div>
+
                                 
-                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                             </form>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ const submit = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div >
-                            Create New Sales/Invoice
+                            Edit Sales/Invoice
                             <form @submit.prevent="submit" class="p-7">
 
                                 <div class="grid md:grid-cols-2 md:gap-6">
@@ -73,19 +73,28 @@ const submit = () => {
 
                                     </div>
                                     <div class="relative z-0 w-full mb-6 group">
+                                        <!-- Choose Role -->
+                                        <select id="role" v-model="form.role" name="role" for='role' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                            <option value="" disabled selected hidden>Choose Role</option>
+                                            <option value="user">User1 for (LE)</option>
+                                            <option value="user2">User2 for (LC-Chips)</option>
+                                        </select>
+                                        <!-- <div v-if="errors.role">{{ errors.role }}</div> -->
+                                    </div>
+                                    <!-- <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.logistic_charge" name="logistic_charge" id="logistic_charge" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <label for="phone" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                             Logistic Charge
                                         </label>
 
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 
                                
                                 
 
-                                <div class="grid md:grid-cols-2 md:gap-6">
+                                <!-- <div class="grid md:grid-cols-2 md:gap-6">
                                     
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.handling_charge" name="handling_charge" id="handling_charge" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
@@ -101,26 +110,18 @@ const submit = () => {
                                         </label>
 
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="grid md:grid-cols-2 md:gap-6">
                                     
-                                    <div class="relative z-0 w-full mb-6 group">
+                                    <!-- <div class="relative z-0 w-full mb-6 group">
                                         <input type="text" v-model="form.scheme" name="scheme" id="scheme" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                                         <label for="scheme" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                             Scheme
                                         </label>
 
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <!-- Choose Role -->
-                                        <select id="role" v-model="form.role" name="role" for='role' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-                                            <option value="" disabled selected hidden>Choose Role</option>
-                                            <option value="user">User1 for (LE)</option>
-                                            <option value="user2">User2 for (LC-Chips)</option>
-                                        </select>
-                                        <!-- <div v-if="errors.role">{{ errors.role }}</div> -->
-                                    </div>  
+                                    </div> -->
+                                      
                                     <div class="relative z-0 w-full mb-6 group">
                                         <input type="hidden" disabled v-model="form.id" name="id" id="id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                         <!-- <label for="id" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">

@@ -101,8 +101,8 @@ class PurchaseController extends Controller
             'vendor' => 'required',
             'date' => 'required',
             'invoice_number' => 'required',
-            'logistic_charge' => 'required',
-            'handling_charge' => 'required',
+            // 'logistic_charge' => 'required',
+            // 'handling_charge' => 'required',
             
             // 'sub_total' => 'required',
 
@@ -112,10 +112,10 @@ class PurchaseController extends Controller
         $purchase->vendor = $request->vendor;
         $purchase->date = $request->date;
         $purchase->invoice_number = $request->invoice_number;
-        $purchase->logistic_charge = $request->logistic_charge;
-        $purchase->handling_charge = $request->handling_charge;
-        $purchase->discount = $request->discount;
-        $purchase->scheme = $request->scheme;
+        // $purchase->logistic_charge = $request->logistic_charge;
+        // $purchase->handling_charge = $request->handling_charge;
+        // $purchase->discount = $request->discount;
+        // $purchase->scheme = $request->scheme;
        
         $purchase->save();
 
