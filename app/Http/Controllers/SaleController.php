@@ -72,6 +72,10 @@ class SaleController extends Controller
         else
         {
             $invoiceNumber=$count;
+
+            $customers=Customer::pluck('name','id');
+            return Inertia::render('Sales/AdminCreate',compact('customers','invoiceNumber'));
+
         }
 
         $customers=Customer::pluck('name','id');
@@ -92,7 +96,12 @@ class SaleController extends Controller
         ]);
 
         $user = Auth::user();
-        $userRole=$user->role;
+        if($user->role=='admin')
+        {
+            $userRole=$request->role;
+        }
+        else
+            $userRole=$user->role;
 
         if (is_null($request->new_name))
         {
